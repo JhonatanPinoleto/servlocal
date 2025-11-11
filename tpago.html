@@ -1,0 +1,2041 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ServLocal - Marketplace de Serviços</title>
+    <link rel="icon" type="image/x-icon" href="https://chatgpt.com/backend-api/estuary/content?id=file_00000000874c71f5ae5ede2938d3bf45&ts=489637&p=fs&cid=1&sig=cb225607c75e159df2cdc4e19f96d04220fcc4d3b572784d2915ef01812074b4&v=0">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #10b981;
+            --primary-dark: #059669;
+            --secondary: #3b82f6;
+            --dark: #1f2937;
+            --gray: #6b7280;
+            --light-gray: #f3f4f6;
+            --border: #e5e7eb;
+            --white: #ffffff;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--light-gray);
+            color: var(--dark);
+        }
+
+        .hidden { display: none !important; }
+
+        /* ===== LOGIN PAGE ===== */
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .login-card {
+            background: var(--white);
+            border-radius: 20px;
+            box-shadow: var(--shadow-lg);
+            padding: 40px;
+            width: 100%;
+            max-width: 440px;
+            animation: slideUp 0.5s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .logo {
+            text-align: center;
+            font-size: 36px;
+            font-weight: 800;
+            background: #3b82f6;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--gray);
+            margin-bottom: 30px;
+            font-size: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--dark);
+            font-size: 14px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            font-size: 15px;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--secondary);
+            color: white;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-secondary:hover {
+            background: #2563eb;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
+        }
+
+        .link {
+            color: var(--secondary);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .link:hover {
+            color: var(--primary);
+        }
+
+        .form-footer {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        /* ===== NAVBAR ===== */
+        .navbar {
+            background: var(--white);
+            box-shadow: var(--shadow);
+            padding: 16px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-size: 28px;
+            font-weight: 800;
+            background: #3b82f6;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            cursor: pointer;
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .mode-toggle {
+            display: flex;
+            background: var(--light-gray);
+            border-radius: 10px;
+            padding: 4px;
+            gap: 4px;
+        }
+
+        .mode-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            background: transparent;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+            color: var(--gray);
+        }
+
+        .mode-btn.active {
+            background: var(--white);
+            color: var(--primary);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .user-menu {
+            position: relative;
+        }
+
+        .user-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: var(--light-gray);
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .user-btn:hover {
+            background: var(--border);
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary);
+        }
+
+        .dropdown {
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            background: var(--white);
+            border-radius: 10px;
+            box-shadow: var(--shadow-lg);
+            min-width: 200px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s;
+        }
+
+        .dropdown.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-item {
+            display: block;
+            padding: 12px 20px;
+            color: var(--dark);
+            text-decoration: none;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+
+        .dropdown-item:hover {
+            background: var(--light-gray);
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .main-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 32px 24px;
+        }
+
+        .page-header {
+            margin-bottom: 32px;
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .page-description {
+            color: var(--gray);
+            font-size: 16px;
+        }
+
+        /* ===== CATEGORIES ===== */
+        .categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .category-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .category-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--primary);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .category-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .category-name {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        /* ===== SERVICES GRID ===== */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .service-card {
+            background: var(--white);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .service-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .service-image {
+            width: 100%;
+            height: 180px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+        }
+
+        .service-content {
+            padding: 20px;
+        }
+
+        .service-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .service-provider {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+            color: var(--gray);
+            font-size: 14px;
+        }
+
+        .rating {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            color: #fbbf24;
+            font-weight: 600;
+        }
+
+        .service-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 12px;
+            border-top: 1px solid var(--border);
+        }
+
+        .service-price {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .btn-contact {
+            padding: 8px 16px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-contact:hover {
+            background: var(--primary-dark);
+        }
+
+        /* ===== MODAL ===== */
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: var(--white);
+            border-radius: 20px;
+            max-width: 800px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: slideUp 0.3s ease;
+        }
+
+        .modal-header {
+            padding: 24px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .btn-close {
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: var(--gray);
+            padding: 0;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+
+        .btn-close:hover {
+            background: var(--light-gray);
+            color: var(--dark);
+        }
+
+        .modal-body {
+            padding: 24px;
+        }
+
+        .provider-info {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            margin-bottom: 24px;
+            padding: 16px;
+            background: var(--light-gray);
+            border-radius: 12px;
+        }
+
+        .provider-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            color: white;
+        }
+
+        .provider-details h3 {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        .stats {
+            display: flex;
+            gap: 16px;
+            margin-top: 8px;
+            font-size: 14px;
+            color: var(--gray);
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .chat-box {
+            background: var(--light-gray);
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 24px;
+        }
+
+        .chat-messages {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 16px;
+        }
+
+        .message {
+            padding: 12px;
+            border-radius: 12px;
+            margin-bottom: 8px;
+            max-width: 70%;
+        }
+
+        .message.sent {
+            background: var(--primary);
+            color: white;
+            margin-left: auto;
+        }
+
+        .message.received {
+            background: var(--white);
+        }
+
+        .chat-input {
+            display: flex;
+            gap: 8px;
+        }
+
+        .chat-input input {
+            flex: 1;
+        }
+
+        .btn-send {
+            padding: 12px 20px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* ===== WORKER MODE ===== */
+        .dashboard-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: var(--shadow);
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 12px;
+        }
+
+        .stat-icon.blue { background: #dbeafe; }
+        .stat-icon.green { background: #d1fae5; }
+        .stat-icon.orange { background: #fed7aa; }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            color: var(--gray);
+            font-size: 14px;
+        }
+
+        .requests-list {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: var(--shadow);
+        }
+
+        .request-item {
+            padding: 16px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            margin-bottom: 16px;
+            transition: all 0.3s;
+        }
+
+        .request-item:hover {
+            border-color: var(--primary);
+            background: var(--light-gray);
+        }
+
+        .request-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 12px;
+        }
+
+        .request-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .btn-accept {
+            padding: 8px 16px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn-decline {
+            padding: 8px 16px;
+            background: var(--light-gray);
+            color: var(--dark);
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn-add {
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            border: none;
+            font-size: 32px;
+            cursor: pointer;
+            box-shadow: 0 8px 16px rgba(16, 185, 129, 0.4);
+            transition: all 0.3s;
+        }
+
+        .btn-add:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 24px rgba(16, 185, 129, 0.5);
+        }
+
+        /* ===== PROFILE PAGE ===== */
+        .profile-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            margin-bottom: 32px;
+            padding: 24px;
+            background: var(--white);
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+        }
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-info h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .profile-info p {
+            color: var(--gray);
+            margin-bottom: 12px;
+        }
+
+        .profile-stats {
+            display: flex;
+            gap: 24px;
+        }
+
+        .profile-stat {
+            text-align: center;
+        }
+
+        .profile-stat-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .profile-stat-label {
+            font-size: 14px;
+            color: var(--gray);
+        }
+
+        .profile-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        .profile-card {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: var(--shadow);
+        }
+
+        .profile-card h2 {
+            font-size: 20px;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .info-item:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            font-weight: 600;
+        }
+
+        .info-value {
+            color: var(--gray);
+        }
+
+        .btn-edit {
+            padding: 8px 16px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-edit:hover {
+            background: var(--primary-dark);
+        }
+
+        /* ===== SETTINGS PAGE ===== */
+        .settings-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .settings-card {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: var(--shadow);
+            margin-bottom: 24px;
+        }
+
+        .settings-card h2 {
+            font-size: 20px;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .settings-group {
+            margin-bottom: 20px;
+        }
+
+        .settings-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        .btn-cancel {
+            padding: 12px 24px;
+            background: var(--light-gray);
+            color: var(--dark);
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-cancel:hover {
+            background: var(--border);
+        }
+
+        .btn-save {
+            padding: 12px 24px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-save:hover {
+            background: var(--primary-dark);
+        }
+
+        /* ===== FORGOT PASSWORD PAGE ===== */
+        .forgot-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .forgot-card {
+            background: var(--white);
+            border-radius: 20px;
+            box-shadow: var(--shadow-lg);
+            padding: 40px;
+            width: 100%;
+            max-width: 440px;
+            animation: slideUp 0.5s ease;
+        }
+
+        .back-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--gray);
+            text-decoration: none;
+            margin-bottom: 20px;
+            font-size: 14px;
+            transition: color 0.3s;
+        }
+
+        .back-link:hover {
+            color: var(--primary);
+        }
+
+        /* ===== CREATE ACCOUNT PAGE ===== */
+        .create-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .create-card {
+            background: var(--white);
+            border-radius: 20px;
+            box-shadow: var(--shadow-lg);
+            padding: 40px;
+            width: 100%;
+            max-width: 500px;
+            animation: slideUp 0.5s ease;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 16px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        /* ===== UPLOAD PHOTO ===== */
+        .upload-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .upload-overlay {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .upload-overlay:hover {
+            background: var(--primary-dark);
+            transform: scale(1.1);
+        }
+
+        .upload-input {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .categories {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-content {
+                flex-direction: column;
+                gap: 16px;
+            }
+
+            .profile-content {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .profile-stats {
+                justify-content: center;
+            }
+
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- LOGIN PAGE -->
+    <div id="loginPage" class="login-container">
+        <div class="login-card">
+            <h1 class="logo">ServLocal</h1>
+            <p class="subtitle">Conectando você aos melhores profissionais</p>
+            
+            <form id="loginForm">
+                <div class="form-group">
+                    <label>CPF</label>
+                    <input type="text" id="cpf" placeholder="000.000.000-00" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Senha</label>
+                    <input type="password" id="password" placeholder="Digite sua senha" required>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Entrar</button>
+                
+                <div class="form-footer">
+                    <a href="#" class="link" id="forgotPasswordLink">Esqueci minha senha</a>
+                    <a href="#" class="link" id="createAccountLink">Criar conta</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- FORGOT PASSWORD PAGE -->
+    <div id="forgotPasswordPage" class="forgot-container hidden">
+        <div class="forgot-card">
+            <a href="#" class="back-link" id="backToLoginFromForgot">
+                <span>←</span>
+                <span>Voltar para o login</span>
+            </a>
+            
+            <h1 class="logo">ServLocal</h1>
+            <p class="subtitle">Recupere sua senha</p>
+            
+            <form id="forgotPasswordForm">
+                <div class="form-group">
+                    <label>CPF</label>
+                    <input type="text" id="forgotCpf" placeholder="000.000.000-00" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>E-mail</label>
+                    <input type="email" id="forgotEmail" placeholder="seu@email.com" required>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Recuperar Senha</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- CREATE ACCOUNT PAGE -->
+    <div id="createAccountPage" class="create-container hidden">
+        <div class="create-card">
+            <a href="#" class="back-link" id="backToLoginFromCreate">
+                <span>←</span>
+                <span>Voltar para o login</span>
+            </a>
+            
+            <h1 class="logo">ServLocal</h1>
+            <p class="subtitle">Crie sua conta</p>
+            
+            <form id="createAccountForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Nome</label>
+                        <input type="text" id="createName" placeholder="Seu nome" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Sobrenome</label>
+                        <input type="text" id="createLastName" placeholder="Seu sobrenome" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>CPF</label>
+                    <input type="text" id="createCpf" placeholder="000.000.000-00" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>E-mail</label>
+                    <input type="email" id="createEmail" placeholder="seu@email.com" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Senha</label>
+                    <input type="password" id="createPassword" placeholder="Crie uma senha" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Confirmar Senha</label>
+                    <input type="password" id="confirmPassword" placeholder="Confirme sua senha" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Tipo de Conta</label>
+                    <select id="accountType" required>
+                        <option value="">Selecione...</option>
+                        <option value="client">Cliente</option>
+                        <option value="worker">Profissional</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Criar Conta</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MAIN APP -->
+    <div id="mainApp" class="hidden">
+        <!-- NAVBAR -->
+        <nav class="navbar">
+            <div class="nav-content">
+                <div class="nav-logo" id="navLogo">ServLocal</div>
+                
+                <div class="nav-actions">
+                    <div class="mode-toggle">
+                        <button class="mode-btn active" data-mode="client">Cliente</button>
+                        <button class="mode-btn" data-mode="worker">Profissional</button>
+                    </div>
+                    
+                    <div class="user-menu">
+                        <button class="user-btn" id="userMenuBtn">
+                            <img src="https://via.placeholder.com/32" alt="Avatar" class="user-avatar" id="userAvatar">
+                            <span id="userName">Usuário</span>
+                        </button>
+                        <div class="dropdown" id="userDropdown">
+                            <a href="#" class="dropdown-item" id="profileLink">Meu Perfil</a>
+                            <a href="#" class="dropdown-item" id="settingsLink">Configurações</a>
+                            <a href="#" class="dropdown-item" id="logoutBtn">Sair</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- CLIENT VIEW -->
+        <div id="clientView" class="main-content">
+            <div class="page-header">
+                <h1 class="page-title">Encontre o Profissional Perfeito</h1>
+                <p class="page-description">Navegue por categoria e contrate serviços de qualidade</p>
+            </div>
+
+            <div class="categories">
+                <div class="category-card" data-category="encanador">
+                    <div class="category-icon">🔧</div>
+                    <div class="category-name">Encanador</div>
+                </div>
+                <div class="category-card" data-category="eletricista">
+                    <div class="category-icon">⚡</div>
+                    <div class="category-name">Eletricista</div>
+                </div>
+                <div class="category-card" data-category="pintor">
+                    <div class="category-icon">🎨</div>
+                    <div class="category-name">Pintor</div>
+                </div>
+                <div class="category-card" data-category="jardineiro">
+                    <div class="category-icon">🌿</div>
+                    <div class="category-name">Jardineiro</div>
+                </div>
+                <div class="category-card" data-category="limpeza">
+                    <div class="category-icon">🧹</div>
+                    <div class="category-name">Limpeza</div>
+                </div>
+                <div class="category-card" data-category="marceneiro">
+                    <div class="category-icon">🪚</div>
+                    <div class="category-name">Marceneiro</div>
+                </div>
+            </div>
+
+            <div class="services-grid" id="servicesGrid"></div>
+        </div>
+
+        <!-- WORKER VIEW -->
+        <div id="workerView" class="main-content hidden">
+            <div class="page-header">
+                <h1 class="page-title">Meu Painel de Trabalho</h1>
+                <p class="page-description">Gerencie suas solicitações e serviços</p>
+            </div>
+
+            <div class="dashboard-cards">
+                <div class="stat-card">
+                    <div class="stat-icon blue">📋</div>
+                    <div class="stat-value" id="requestsCount">0</div>
+                    <div class="stat-label">Solicitações Pendentes</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon green">✓</div>
+                    <div class="stat-value" id="completedCount">23</div>
+                    <div class="stat-label">Serviços Concluídos</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon orange">⭐</div>
+                    <div class="stat-value" id="ratingValue">4.8</div>
+                    <div class="stat-label">Avaliação Média</div>
+                </div>
+            </div>
+
+            <div class="requests-list">
+                <h2 style="margin-bottom: 20px;">Solicitações Recentes</h2>
+                <div id="requestsList"></div>
+            </div>
+
+            <button class="btn-add" id="addServiceBtn">+</button>
+        </div>
+
+        <!-- PROFILE PAGE -->
+        <div id="profilePage" class="main-content hidden">
+            <div class="profile-container">
+                <div class="page-header">
+                    <h1 class="page-title">Meu Perfil</h1>
+                    <p class="page-description">Gerencie suas informações pessoais</p>
+                </div>
+
+                <div class="profile-header">
+                    <div class="upload-container">
+                        <div class="profile-avatar">
+                            <img src="https://via.placeholder.com/120" alt="Foto de perfil" id="profileAvatar">
+                        </div>
+                        <div class="upload-overlay" id="uploadPhotoBtn">
+                            📷
+                        </div>
+                        <input type="file" id="uploadPhotoInput" class="upload-input" accept="image/*">
+                    </div>
+                    <div class="profile-info">
+                        <h1 id="profileName">João Silva</h1>
+                        <p id="profileEmail">joao.silva@email.com</p>
+                        <p id="profileType">Cliente</p>
+                        <div class="profile-stats">
+                            <div class="profile-stat">
+                                <div class="profile-stat-value" id="profileServices">12</div>
+                                <div class="profile-stat-label">Serviços</div>
+                            </div>
+                            <div class="profile-stat">
+                                <div class="profile-stat-value" id="profileRating">4.9</div>
+                                <div class="profile-stat-label">Avaliação</div>
+                            </div>
+                            <div class="profile-stat">
+                                <div class="profile-stat-value" id="profileMember">2</div>
+                                <div class="profile-stat-label">Anos</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="profile-content">
+                    <div class="profile-card">
+                        <h2>Informações Pessoais</h2>
+                        <div class="info-item">
+                            <span class="info-label">Nome Completo</span>
+                            <span class="info-value" id="profileFullName">João Silva</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">CPF</span>
+                            <span class="info-value" id="profileCpf">123.456.789-00</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Telefone</span>
+                            <span class="info-value" id="profilePhone">(11) 99999-9999</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">E-mail</span>
+                            <span class="info-value" id="profileEmailValue">joao.silva@email.com</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Data de Nascimento</span>
+                            <span class="info-value" id="profileBirth">15/05/1985</span>
+                        </div>
+                        <button class="btn-edit" style="margin-top: 16px;">Editar Informações</button>
+                    </div>
+
+                    <div class="profile-card">
+                        <h2>Endereço</h2>
+                        <div class="info-item">
+                            <span class="info-label">CEP</span>
+                            <span class="info-value" id="profileCep">01234-567</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Endereço</span>
+                            <span class="info-value" id="profileAddress">Rua das Flores, 123</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Bairro</span>
+                            <span class="info-value" id="profileDistrict">Centro</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Cidade</span>
+                            <span class="info-value" id="profileCity">São Paulo</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Estado</span>
+                            <span class="info-value" id="profileState">SP</span>
+                        </div>
+                        <button class="btn-edit" style="margin-top: 16px;">Editar Endereço</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SETTINGS PAGE -->
+        <div id="settingsPage" class="main-content hidden">
+            <div class="settings-container">
+                <div class="page-header">
+                    <h1 class="page-title">Configurações</h1>
+                    <p class="page-description">Personalize sua experiência</p>
+                </div>
+
+                <div class="settings-card">
+                    <h2>Preferências de Notificação</h2>
+                    <div class="settings-group">
+                        <label>
+                            <input type="checkbox" id="notifyEmail" checked>
+                            Receber notificações por e-mail
+                        </label>
+                    </div>
+                    <div class="settings-group">
+                        <label>
+                            <input type="checkbox" id="notifySMS" checked>
+                            Receber notificações por SMS
+                        </label>
+                    </div>
+                    <div class="settings-group">
+                        <label>
+                            <input type="checkbox" id="notifyPromotions">
+                            Receber promoções e ofertas
+                        </label>
+                    </div>
+                </div>
+
+                <div class="settings-card">
+                    <h2>Privacidade</h2>
+                    <div class="settings-group">
+                        <label>
+                            <input type="checkbox" id="privacyProfile" checked>
+                            Tornar meu perfil público
+                        </label>
+                    </div>
+                    <div class="settings-group">
+                        <label>
+                            <input type="checkbox" id="privacyContact" checked>
+                            Permitir que outros usuários me contatem
+                        </label>
+                    </div>
+                    <div class="settings-group">
+                        <label>
+                            <input type="checkbox" id="privacyReviews" checked>
+                            Exibir minhas avaliações publicamente
+                        </label>
+                    </div>
+                </div>
+
+                <div class="settings-card">
+                    <h2>Alterar Senha</h2>
+                    <div class="form-group">
+                        <label>Senha Atual</label>
+                        <input type="password" id="currentPassword" placeholder="Digite sua senha atual">
+                    </div>
+                    <div class="form-group">
+                        <label>Nova Senha</label>
+                        <input type="password" id="newPassword" placeholder="Digite a nova senha">
+                    </div>
+                    <div class="form-group">
+                        <label>Confirmar Nova Senha</label>
+                        <input type="password" id="confirmNewPassword" placeholder="Confirme a nova senha">
+                    </div>
+                </div>
+
+                <div class="settings-actions">
+                    <button class="btn-cancel" id="cancelSettings">Cancelar</button>
+                    <button class="btn-save" id="saveSettings">Salvar Alterações</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SERVICE DETAIL MODAL -->
+    <div id="serviceModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitle">Detalhes do Serviço</h2>
+                <button class="btn-close" id="closeModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="provider-info">
+                    <div class="provider-avatar">👤</div>
+                    <div class="provider-details">
+                        <h3 id="providerName">João Silva</h3>
+                        <div class="rating">
+                            ⭐ <span id="providerRating">4.9</span>
+                        </div>
+                        <div class="stats">
+                            <div class="stat-item">
+                                <span>✓</span>
+                                <span id="providerJobs">150 trabalhos</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <h3 style="margin-bottom: 8px;">Descrição</h3>
+                    <p id="serviceDescription" style="color: var(--gray);">
+                        Serviço completo de encanamento com garantia e materiais inclusos.
+                    </p>
+                </div>
+
+                <div class="chat-box">
+                    <h3 style="margin-bottom: 12px;">Chat</h3>
+                    <div class="chat-messages" id="chatMessages">
+                        <div class="message received">Olá! Estou disponível para atendê-lo.</div>
+                    </div>
+                    <div class="chat-input">
+                        <input type="text" id="messageInput" placeholder="Digite sua mensagem...">
+                        <button class="btn-send" id="sendMessageBtn">Enviar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADD SERVICE MODAL -->
+    <div id="addServiceModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Novo Serviço</h2>
+                <button class="btn-close" id="closeAddModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="addServiceForm">
+                    <div class="form-group">
+                        <label>Título do Serviço</label>
+                        <input type="text" required placeholder="Ex: Instalação Elétrica">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Categoria</label>
+                        <input type="text" required placeholder="Ex: Eletricista">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Descrição</label>
+                        <input type="text" required placeholder="Descreva seu serviço">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Preço</label>
+                        <input type="text" required placeholder="A combinar">
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Publicar Serviço</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Wait for DOM to be fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+        
+        // Mock Data
+         const services = [
+            { 
+                id: 1, 
+                title: 'Encanamento Residencial', 
+                provider: 'João Silva', 
+                category: 'encanador', 
+                rating: 4.9, 
+                jobs: 150, 
+                price: 'A combinar', 
+                image: 'https://plus.unsplash.com/premium_photo-1661884973994-d7625e52631a?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1171' 
+            },
+            { 
+                id: 2, 
+                title: 'Instalação Elétrica', 
+                provider: 'Maria Santos', 
+                category: 'eletricista', 
+                rating: 4.8, 
+                jobs: 120, 
+                price: 'A combinar', 
+                image: 'https://images.unsplash.com/photo-1621905252507-b35492cc74b4?w=400&h=300&fit=crop' 
+            },
+            { 
+                id: 3, 
+                title: 'Pintura Residencial', 
+                provider: 'Pedro Costa', 
+                category: 'pintor', 
+                rating: 4.7, 
+                jobs: 98, 
+                price: 'A combinar', 
+                image: 'https://plus.unsplash.com/premium_photo-1683121602687-60c47b2222f0?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1170' 
+            },
+            { 
+                id: 4, 
+                title: 'Manutenção de Jardim', 
+                provider: 'Ana Lima', 
+                category: 'jardineiro', 
+                rating: 4.9, 
+                jobs: 85, 
+                price: 'A combinar', 
+                image: 'https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=400&h=300&fit=crop' 
+            },
+            { 
+                id: 5, 
+                title: 'Limpeza Profunda', 
+                provider: 'Carlos Mendes', 
+                category: 'limpeza', 
+                rating: 4.6, 
+                jobs: 200, 
+                price: 'A combinar', 
+                image: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=400&h=300&fit=crop' 
+            },
+            { 
+                id: 6, 
+                title: 'Móveis Planejados', 
+                provider: 'Roberto Alves', 
+                category: 'marceneiro', 
+                rating: 5.0, 
+                jobs: 65, 
+                price: 'A Combinar', 
+                image: 'https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?w=400&h=300&fit=crop' 
+            },
+        ];
+        
+        
+        // State
+        let currentMode = 'client';
+        let currentPage = 'dashboard';
+        let requests = [
+            { id: 1, client: 'Marcos Silva', service: 'Encanamento Urgente', time: 'Há 30min' },
+            { id: 2, client: 'Julia Oliveira', service: 'Instalação Elétrica', time: 'Há 1h' },
+            { id: 3, client: 'Fernando Costa', service: 'Pintura de Sala', time: 'Há 2h' },
+        ];
+
+        // User data
+        let userData = {
+            name: 'João Silva',
+            email: 'joao.silva@email.com',
+            type: 'client',
+            cpf: '123.456.789-00',
+            phone: '(11) 99999-9999',
+            birth: '15/05/1985',
+            cep: '01234-567',
+            address: 'Rua das Flores, 123',
+            district: 'Centro',
+            city: 'São Paulo',
+            state: 'SP',
+            services: 12,
+            rating: 4.9,
+            memberSince: 2,
+            avatar: 'https://via.placeholder.com/120'
+        };
+
+        // Elements
+        const loginPage = document.getElementById('loginPage');
+        const forgotPasswordPage = document.getElementById('forgotPasswordPage');
+        const createAccountPage = document.getElementById('createAccountPage');
+        const mainApp = document.getElementById('mainApp');
+        const clientView = document.getElementById('clientView');
+        const workerView = document.getElementById('workerView');
+        const profilePage = document.getElementById('profilePage');
+        const settingsPage = document.getElementById('settingsPage');
+        const servicesGrid = document.getElementById('servicesGrid');
+        const serviceModal = document.getElementById('serviceModal');
+        const addServiceModal = document.getElementById('addServiceModal');
+        const requestsList = document.getElementById('requestsList');
+
+        // Check if user is logged in
+        function checkLoginStatus() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+            if (isLoggedIn === 'true') {
+                loginPage.classList.add('hidden');
+                mainApp.classList.remove('hidden');
+                renderServices();
+                updateStats();
+                updateUserAvatar();
+            }
+        }
+
+        // Login
+        document.getElementById('loginForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            localStorage.setItem('isLoggedIn', 'true');
+            loginPage.classList.add('hidden');
+            mainApp.classList.remove('hidden');
+            renderServices();
+            updateStats();
+            updateUserAvatar();
+        });
+
+        // Logout
+        document.getElementById('logoutBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            localStorage.setItem('isLoggedIn', 'false');
+            mainApp.classList.add('hidden');
+            loginPage.classList.remove('hidden');
+            hideAllPages();
+            showDashboard();
+        });
+
+        // Forgot Password Link
+        document.getElementById('forgotPasswordLink').addEventListener('click', (e) => {
+            e.preventDefault();
+            loginPage.classList.add('hidden');
+            forgotPasswordPage.classList.remove('hidden');
+        });
+
+        // Back to Login from Forgot Password
+        document.getElementById('backToLoginFromForgot').addEventListener('click', (e) => {
+            e.preventDefault();
+            forgotPasswordPage.classList.add('hidden');
+            loginPage.classList.remove('hidden');
+        });
+
+        // Create Account Link
+        document.getElementById('createAccountLink').addEventListener('click', (e) => {
+            e.preventDefault();
+            loginPage.classList.add('hidden');
+            createAccountPage.classList.remove('hidden');
+        });
+
+        // Back to Login from Create Account
+        document.getElementById('backToLoginFromCreate').addEventListener('click', (e) => {
+            e.preventDefault();
+            createAccountPage.classList.add('hidden');
+            loginPage.classList.remove('hidden');
+        });
+
+        // Forgot Password Form
+        document.getElementById('forgotPasswordForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Instruções para redefinir sua senha foram enviadas para o e-mail informado.');
+            forgotPasswordPage.classList.add('hidden');
+            loginPage.classList.remove('hidden');
+        });
+
+        // Create Account Form
+        document.getElementById('createAccountForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const password = document.getElementById('createPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            if (password !== confirmPassword) {
+                alert('As senhas não coincidem. Por favor, tente novamente.');
+                return;
+            }
+            
+            alert('Conta criada com sucesso! Faça login para continuar.');
+            createAccountPage.classList.add('hidden');
+            loginPage.classList.remove('hidden');
+        });
+
+        // User Menu Toggle
+        document.getElementById('userMenuBtn').addEventListener('click', () => {
+            document.getElementById('userDropdown').classList.toggle('show');
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.user-menu')) {
+                document.getElementById('userDropdown').classList.remove('show');
+            }
+        });
+
+        // Profile Link
+        document.getElementById('profileLink').addEventListener('click', (e) => {
+            e.preventDefault();
+            hideAllPages();
+            showProfile();
+            document.getElementById('userDropdown').classList.remove('show');
+        });
+
+        // Settings Link
+        document.getElementById('settingsLink').addEventListener('click', (e) => {
+            e.preventDefault();
+            hideAllPages();
+            showSettings();
+            document.getElementById('userDropdown').classList.remove('show');
+        });
+
+        // Nav Logo - Go to Dashboard and reset filters
+        document.getElementById('navLogo').addEventListener('click', () => {
+            hideAllPages();
+            showDashboard();
+            renderServices(); // Reset to show all services without filters
+        });
+
+        // Cancel Settings
+        document.getElementById('cancelSettings').addEventListener('click', () => {
+            hideAllPages();
+            showDashboard();
+        });
+
+        // Save Settings
+        document.getElementById('saveSettings').addEventListener('click', () => {
+            alert('Configurações salvas com sucesso!');
+            hideAllPages();
+            showDashboard();
+        });
+
+        // Upload Photo
+        document.getElementById('uploadPhotoBtn').addEventListener('click', () => {
+            document.getElementById('uploadPhotoInput').click();
+        });
+
+        // Handle photo upload
+        document.getElementById('uploadPhotoInput').addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const imageUrl = event.target.result;
+                    // Update user avatar
+                    userData.avatar = imageUrl;
+                    updateUserAvatar();
+                    // Save to localStorage
+                    localStorage.setItem('userAvatar', imageUrl);
+                    alert('Foto atualizada com sucesso!');
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Update user avatar
+        function updateUserAvatar() {
+            const savedAvatar = localStorage.getItem('userAvatar');
+            if (savedAvatar) {
+                userData.avatar = savedAvatar;
+            }
+            
+            document.getElementById('userAvatar').src = userData.avatar;
+            document.getElementById('profileAvatar').src = userData.avatar;
+        }
+
+        // Hide all pages
+        function hideAllPages() {
+            clientView.classList.add('hidden');
+            workerView.classList.add('hidden');
+            profilePage.classList.add('hidden');
+            settingsPage.classList.add('hidden');
+        }
+
+        // Show dashboard based on current mode
+        function showDashboard() {
+            if (currentMode === 'client') {
+                clientView.classList.remove('hidden');
+            } else {
+                workerView.classList.remove('hidden');
+                renderRequests();
+            }
+        }
+
+        // Show profile page
+        function showProfile() {
+            profilePage.classList.remove('hidden');
+            updateProfileData();
+        }
+
+        // Show settings page
+        function showSettings() {
+            settingsPage.classList.remove('hidden');
+        }
+
+        // Update profile data
+        function updateProfileData() {
+            document.getElementById('profileName').textContent = userData.name;
+            document.getElementById('profileEmail').textContent = userData.email;
+            document.getElementById('profileType').textContent = userData.type === 'client' ? 'Cliente' : 'Profissional';
+            document.getElementById('profileServices').textContent = userData.services;
+            document.getElementById('profileRating').textContent = userData.rating;
+            document.getElementById('profileMember').textContent = userData.memberSince;
+            
+            document.getElementById('profileFullName').textContent = userData.name;
+            document.getElementById('profileCpf').textContent = userData.cpf;
+            document.getElementById('profilePhone').textContent = userData.phone;
+            document.getElementById('profileEmailValue').textContent = userData.email;
+            document.getElementById('profileBirth').textContent = userData.birth;
+            
+            document.getElementById('profileCep').textContent = userData.cep;
+            document.getElementById('profileAddress').textContent = userData.address;
+            document.getElementById('profileDistrict').textContent = userData.district;
+            document.getElementById('profileCity').textContent = userData.city;
+            document.getElementById('profileState').textContent = userData.state;
+        }
+
+        // Mode Toggle
+        document.querySelectorAll('.mode-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentMode = btn.dataset.mode;
+                
+                if (currentPage === 'dashboard') {
+                    hideAllPages();
+                    showDashboard();
+                }
+            });
+        });
+
+        // Render Services
+    function renderServices(category = null) {
+        const filtered = category ? services.filter(s => s.category === category) : services;
+        
+        servicesGrid.innerHTML = filtered.map(service => `
+            <div class="service-card" data-id="${service.id}">
+                <div class="service-image">
+                    <img src="${service.image}" alt="${service.title}" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <div class="service-content">
+                    <div class="service-title">${service.title}</div>
+                    <div class="service-provider">
+                        <span>👤</span>
+                        <span>${service.provider}</span>
+                    </div>
+                    <div class="rating">
+                        <span>⭐</span>
+                        <span>${service.rating}</span>
+                        <span style="color: var(--gray); margin-left: 8px;">(${service.jobs} trabalhos)</span>
+                    </div>
+                    <div class="service-footer">
+                        <div class="service-price">${service.price}</div>
+                        <button class="btn-contact">Contatar</button>
+                    </div>
+                </div>
+            </div>
+        `).join('');    
+            // Add click events
+            document.querySelectorAll('.service-card').forEach(card => {
+                card.addEventListener('click', (e) => {
+                    if (!e.target.classList.contains('btn-contact')) {
+                        const id = parseInt(card.dataset.id);
+                        openServiceModal(id);
+                    }
+                });
+            });
+
+            document.querySelectorAll('.btn-contact').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const card = e.target.closest('.service-card');
+                    const id = parseInt(card.dataset.id);
+                    openServiceModal(id);
+                });
+            });
+        }
+
+        // Category Filter
+        document.querySelectorAll('.category-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const category = card.dataset.category;
+                renderServices(category);
+            });
+        });
+
+        // Open Service Modal
+        function openServiceModal(id) {
+            const service = services.find(s => s.id === id);
+            if (!service) return;
+
+            document.getElementById('modalTitle').textContent = service.title;
+            document.getElementById('providerName').textContent = service.provider;
+            document.getElementById('providerRating').textContent = service.rating;
+            document.getElementById('providerJobs').textContent = `${service.jobs} trabalhos`;
+            document.getElementById('serviceDescription').textContent = 
+                `Serviço completo de ${service.title.toLowerCase()} com garantia e materiais inclusos. Profissional experiente e qualificado.`;
+
+            serviceModal.classList.remove('hidden');
+        }
+
+        // Close Service Modal
+        document.getElementById('closeModal').addEventListener('click', () => {
+            serviceModal.classList.add('hidden');
+        });
+
+        // Click outside modal to close
+        serviceModal.addEventListener('click', (e) => {
+            if (e.target === serviceModal) {
+                serviceModal.classList.add('hidden');
+            }
+        });
+
+        // Chat Functionality
+        document.getElementById('sendMessageBtn').addEventListener('click', () => {
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+            
+            if (message) {
+                const chatMessages = document.getElementById('chatMessages');
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'message sent';
+                messageDiv.textContent = message;
+                chatMessages.appendChild(messageDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+                input.value = '';
+
+                // Simulate response
+                setTimeout(() => {
+                    const responseDiv = document.createElement('div');
+                    responseDiv.className = 'message received';
+                    responseDiv.textContent = 'Obrigado pela mensagem! Vou responder em breve.';
+                    chatMessages.appendChild(responseDiv);
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                }, 1500);
+            }
+        });
+
+        // Enter key to send message
+        document.getElementById('messageInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                document.getElementById('sendMessageBtn').click();
+            }
+        });
+
+        // Render Worker Requests
+        function renderRequests() {
+            requestsList.innerHTML = requests.map(request => `
+                <div class="request-item">
+                    <div class="request-header">
+                        <div>
+                            <div style="font-weight: 600; margin-bottom: 4px;">${request.service}</div>
+                            <div style="color: var(--gray); font-size: 14px;">
+                                <span>👤 ${request.client}</span>
+                                <span style="margin-left: 12px;">🕐 ${request.time}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="color: var(--gray); font-size: 14px; margin-top: 8px;">
+                        O cliente está aguardando sua resposta para iniciar o serviço.
+                    </div>
+                    <div class="request-actions">
+                        <button class="btn-accept" onclick="acceptRequest(${request.id})">Aceitar</button>
+                        <button class="btn-decline" onclick="declineRequest(${request.id})">Recusar</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Accept Request
+        window.acceptRequest = function(id) {
+            alert('Solicitação aceita! O cliente foi notificado.');
+            const index = requests.findIndex(r => r.id === id);
+            if (index > -1) {
+                requests.splice(index, 1);
+                renderRequests();
+                updateStats();
+            }
+        };
+
+        // Decline Request
+        window.declineRequest = function(id) {
+            const index = requests.findIndex(r => r.id === id);
+            if (index > -1) {
+                requests.splice(index, 1);
+                renderRequests();
+                updateStats();
+            }
+        };
+
+        // Update Stats
+        function updateStats() {
+            document.getElementById('requestsCount').textContent = requests.length;
+        }
+
+        // Add Service Button
+        document.getElementById('addServiceBtn').addEventListener('click', () => {
+            addServiceModal.classList.remove('hidden');
+        });
+
+        // Close Add Service Modal
+        document.getElementById('closeAddModal').addEventListener('click', () => {
+            addServiceModal.classList.add('hidden');
+        });
+
+        // Click outside modal to close
+        addServiceModal.addEventListener('click', (e) => {
+            if (e.target === addServiceModal) {
+                addServiceModal.classList.add('hidden');
+            }
+        });
+
+        // Add Service Form
+        document.getElementById('addServiceForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Serviço publicado com sucesso!');
+            addServiceModal.classList.add('hidden');
+            e.target.reset();
+        });
+
+        // CPF Formatting
+        document.getElementById('cpf').addEventListener('input', (e) => {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length <= 11) {
+                value = value.replace(/(\d{3})(\d)/, '$1.$2');
+                value = value.replace(/(\d{3})(\d)/, '$1.$2');
+                value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+            }
+            e.target.value = value;
+        });
+
+        document.getElementById('forgotCpf').addEventListener('input', (e) => {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length <= 11) {
+                value = value.replace(/(\d{3})(\d)/, '$1.$2');
+                value = value.replace(/(\d{3})(\d)/, '$1.$2');
+                value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+            }
+            e.target.value = value;
+        });
+
+        document.getElementById('createCpf').addEventListener('input', (e) => {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length <= 11) {
+                value = value.replace(/(\d{3})(\d)/, '$1.$2');
+                value = value.replace(/(\d{3})(\d)/, '$1.$2');
+                value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+            }
+            e.target.value = value;
+        });
+
+        // Initialize
+        checkLoginStatus();
+        updateStats();
+
+        }); // Fechamento do DOMContentLoaded
+    </script>
+</body>
+</html>
