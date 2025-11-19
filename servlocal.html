@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ServLocal - Marketplace de Serviços</title>
-    <link rel="icon" type="image/x-icon" href="https://chatgpt.com/backend-api/estuary/content?id=file_00000000874c71f5ae5ede2938d3bf45&ts=489637&p=fs&cid=1&sig=cb225607c75e159df2cdc4e19f96d04220fcc4d3b572784d2915ef01812074b4&v=0">
     <style>
         * {
             margin: 0;
@@ -33,14 +32,13 @@
 
         .hidden { display: none !important; }
 
-        /* ===== LOGIN PAGE ===== */
         .login-container {
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
         }
 
         .login-card {
@@ -68,9 +66,7 @@
             text-align: center;
             font-size: 36px;
             font-weight: 800;
-            background: #3b82f6;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: var(--primary);
             margin-bottom: 10px;
         }
 
@@ -133,18 +129,6 @@
             box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4);
         }
 
-        .btn-secondary {
-            background: var(--secondary);
-            color: white;
-            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
-        }
-
-        .btn-secondary:hover {
-            background: #2563eb;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
-        }
-
         .link {
             color: var(--secondary);
             text-decoration: none;
@@ -163,7 +147,6 @@
             margin-top: 20px;
         }
 
-        /* ===== NAVBAR ===== */
         .navbar {
             background: var(--white);
             box-shadow: var(--shadow);
@@ -185,10 +168,80 @@
         .nav-logo {
             font-size: 28px;
             font-weight: 800;
-            background: #3b82f6;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: var(--primary);
             cursor: pointer;
+        }
+
+        .location-selector {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: var(--light-gray);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .location-selector:hover {
+            background: var(--border);
+        }
+
+        .location-icon {
+            font-size: 18px;
+        }
+
+        .location-text {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .location-dropdown {
+            position: absolute;
+            top: calc(100% + 8px);
+            left: 0;
+            background: var(--white);
+            border-radius: 10px;
+            box-shadow: var(--shadow-lg);
+            min-width: 250px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+
+        .location-dropdown.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .location-item {
+            padding: 12px 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .location-item:last-child {
+            border-bottom: none;
+        }
+
+        .location-item:hover {
+            background: var(--light-gray);
+        }
+
+        .location-item-name {
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 2px;
+        }
+
+        .location-item-address {
+            font-size: 12px;
+            color: var(--gray);
         }
 
         .nav-actions {
@@ -285,7 +338,6 @@
             background: var(--light-gray);
         }
 
-        /* ===== MAIN CONTENT ===== */
         .main-content {
             max-width: 1400px;
             margin: 0 auto;
@@ -307,7 +359,34 @@
             font-size: 16px;
         }
 
-        /* ===== CATEGORIES ===== */
+        .search-bar {
+            margin-bottom: 32px;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 16px 48px 16px 20px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .search-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 20px;
+            color: var(--gray);
+        }
+
         .categories {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
@@ -325,7 +404,7 @@
             border: 2px solid transparent;
         }
 
-        .category-card:hover {
+        .category-card:hover, .category-card.active {
             transform: translateY(-4px);
             border-color: var(--primary);
             box-shadow: var(--shadow-lg);
@@ -341,7 +420,6 @@
             font-size: 14px;
         }
 
-        /* ===== SERVICES GRID ===== */
         .services-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -366,10 +444,13 @@
             width: 100%;
             height: 180px;
             background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 48px;
+            overflow: hidden;
+        }
+
+        .service-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .service-content {
@@ -428,7 +509,6 @@
             background: var(--primary-dark);
         }
 
-        /* ===== MODAL ===== */
         .modal {
             position: fixed;
             inset: 0;
@@ -578,7 +658,6 @@
             cursor: pointer;
         }
 
-        /* ===== WORKER MODE ===== */
         .dashboard-cards {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -624,6 +703,7 @@
             border-radius: 16px;
             padding: 24px;
             box-shadow: var(--shadow);
+            margin-bottom: 24px;
         }
 
         .request-item {
@@ -693,7 +773,6 @@
             box-shadow: 0 12px 24px rgba(16, 185, 129, 0.5);
         }
 
-        /* ===== PROFILE PAGE ===== */
         .profile-container {
             max-width: 800px;
             margin: 0 auto;
@@ -760,12 +839,6 @@
             color: var(--gray);
         }
 
-        .profile-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 24px;
-        }
-
         .profile-card {
             background: var(--white);
             border-radius: 16px;
@@ -808,13 +881,13 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
+            margin-top: 16px;
         }
 
         .btn-edit:hover {
             background: var(--primary-dark);
         }
 
-        /* ===== SETTINGS PAGE ===== */
         .settings-container {
             max-width: 800px;
             margin: 0 auto;
@@ -876,26 +949,6 @@
             background: var(--primary-dark);
         }
 
-        /* ===== FORGOT PASSWORD PAGE ===== */
-        .forgot-container {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-
-        .forgot-card {
-            background: var(--white);
-            border-radius: 20px;
-            box-shadow: var(--shadow-lg);
-            padding: 40px;
-            width: 100%;
-            max-width: 440px;
-            animation: slideUp 0.5s ease;
-        }
-
         .back-link {
             display: flex;
             align-items: center;
@@ -911,26 +964,6 @@
             color: var(--primary);
         }
 
-        /* ===== CREATE ACCOUNT PAGE ===== */
-        .create-container {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-
-        .create-card {
-            background: var(--white);
-            border-radius: 20px;
-            box-shadow: var(--shadow-lg);
-            padding: 40px;
-            width: 100%;
-            max-width: 500px;
-            animation: slideUp 0.5s ease;
-        }
-
         .form-row {
             display: flex;
             gap: 16px;
@@ -940,7 +973,6 @@
             flex: 1;
         }
 
-        /* ===== UPLOAD PHOTO ===== */
         .upload-container {
             position: relative;
             display: inline-block;
@@ -972,6 +1004,31 @@
             display: none;
         }
 
+        .rating-modal .stars {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin: 20px 0;
+            font-size: 36px;
+        }
+
+        .star {
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .star:hover {
+            transform: scale(1.2);
+        }
+
+        .star.active {
+            color: #fbbf24;
+        }
+
+        .star.inactive {
+            color: var(--border);
+        }
+
         @media (max-width: 768px) {
             .categories {
                 grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
@@ -982,12 +1039,8 @@
             }
 
             .nav-content {
-                flex-direction: column;
-                gap: 16px;
-            }
-
-            .profile-content {
-                grid-template-columns: 1fr;
+                flex-wrap: wrap;
+                gap: 12px;
             }
 
             .profile-header {
@@ -1007,7 +1060,6 @@
     </style>
 </head>
 <body>
-    <!-- LOGIN PAGE -->
     <div id="loginPage" class="login-container">
         <div class="login-card">
             <h1 class="logo">ServLocal</h1>
@@ -1034,9 +1086,8 @@
         </div>
     </div>
 
-    <!-- FORGOT PASSWORD PAGE -->
-    <div id="forgotPasswordPage" class="forgot-container hidden">
-        <div class="forgot-card">
+    <div id="forgotPasswordPage" class="login-container hidden">
+        <div class="login-card">
             <a href="#" class="back-link" id="backToLoginFromForgot">
                 <span>←</span>
                 <span>Voltar para o login</span>
@@ -1061,9 +1112,8 @@
         </div>
     </div>
 
-    <!-- CREATE ACCOUNT PAGE -->
-    <div id="createAccountPage" class="create-container hidden">
-        <div class="create-card">
+    <div id="createAccountPage" class="login-container hidden">
+        <div class="login-card" style="max-width: 500px;">
             <a href="#" class="back-link" id="backToLoginFromCreate">
                 <span>←</span>
                 <span>Voltar para o login</span>
@@ -1119,12 +1169,26 @@
         </div>
     </div>
 
-    <!-- MAIN APP -->
     <div id="mainApp" class="hidden">
-        <!-- NAVBAR -->
         <nav class="navbar">
             <div class="nav-content">
                 <div class="nav-logo" id="navLogo">ServLocal</div>
+                
+                <div class="location-selector" id="locationSelector">
+                    <span class="location-icon">📍</span>
+                    <span class="location-text" id="currentLocation">Centro Sul, 99</span>
+                    <span>▼</span>
+                    <div class="location-dropdown" id="locationDropdown">
+                        <div class="location-item" data-location="Centro Sul, 99">
+                            <div class="location-item-name">Centro Sul</div>
+                            <div class="location-item-address">Rua Centro Sul, 99</div>
+                        </div>
+                        <div class="location-item" data-location="Vila da Boa Vista">
+                            <div class="location-item-name">Vila da Boa Vista</div>
+                            <div class="location-item-address">Interior</div>
+                        </div>
+                    </div>
+                </div>
                 
                 <div class="nav-actions">
                     <div class="mode-toggle">
@@ -1147,11 +1211,15 @@
             </div>
         </nav>
 
-        <!-- CLIENT VIEW -->
         <div id="clientView" class="main-content">
             <div class="page-header">
                 <h1 class="page-title">Encontre o Profissional Perfeito</h1>
                 <p class="page-description">Navegue por categoria e contrate serviços de qualidade</p>
+            </div>
+
+            <div class="search-bar">
+                <input type="text" class="search-input" id="searchInput" placeholder="Buscar serviços...">
+                <span class="search-icon">🔍</span>
             </div>
 
             <div class="categories">
@@ -1184,7 +1252,6 @@
             <div class="services-grid" id="servicesGrid"></div>
         </div>
 
-        <!-- WORKER VIEW -->
         <div id="workerView" class="main-content hidden">
             <div class="page-header">
                 <h1 class="page-title">Meu Painel de Trabalho</h1>
@@ -1200,8 +1267,8 @@
                 
                 <div class="stat-card">
                     <div class="stat-icon green">✓</div>
-                    <div class="stat-value" id="completedCount">23</div>
-                    <div class="stat-label">Serviços Concluídos</div>
+                    <div class="stat-value" id="acceptedCount">0</div>
+                    <div class="stat-label">Serviços Aceitos</div>
                 </div>
                 
                 <div class="stat-card">
@@ -1212,14 +1279,18 @@
             </div>
 
             <div class="requests-list">
-                <h2 style="margin-bottom: 20px;">Solicitações Recentes</h2>
+                <h2 style="margin-bottom: 20px;">Solicitações Pendentes</h2>
                 <div id="requestsList"></div>
+            </div>
+
+            <div class="requests-list">
+                <h2 style="margin-bottom: 20px;">Serviços Aceitos</h2>
+                <div id="acceptedList"></div>
             </div>
 
             <button class="btn-add" id="addServiceBtn">+</button>
         </div>
 
-        <!-- PROFILE PAGE -->
         <div id="profilePage" class="main-content hidden">
             <div class="profile-container">
                 <div class="page-header">
@@ -1232,9 +1303,7 @@
                         <div class="profile-avatar">
                             <img src="https://via.placeholder.com/120" alt="Foto de perfil" id="profileAvatar">
                         </div>
-                        <div class="upload-overlay" id="uploadPhotoBtn">
-                            📷
-                        </div>
+                        <div class="upload-overlay" id="uploadPhotoBtn">📷</div>
                         <input type="file" id="uploadPhotoInput" class="upload-input" accept="image/*">
                     </div>
                     <div class="profile-info">
@@ -1258,61 +1327,33 @@
                     </div>
                 </div>
 
-                <div class="profile-content">
-                    <div class="profile-card">
-                        <h2>Informações Pessoais</h2>
-                        <div class="info-item">
-                            <span class="info-label">Nome Completo</span>
-                            <span class="info-value" id="profileFullName">João Silva</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">CPF</span>
-                            <span class="info-value" id="profileCpf">123.456.789-00</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">Telefone</span>
-                            <span class="info-value" id="profilePhone">(11) 99999-9999</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">E-mail</span>
-                            <span class="info-value" id="profileEmailValue">joao.silva@email.com</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">Data de Nascimento</span>
-                            <span class="info-value" id="profileBirth">15/05/1985</span>
-                        </div>
-                        <button class="btn-edit" style="margin-top: 16px;">Editar Informações</button>
+                <div class="profile-card">
+                    <h2>Informações Pessoais</h2>
+                    <div class="info-item">
+                        <span class="info-label">Nome Completo</span>
+                        <span class="info-value" id="profileFullName">João Silva</span>
                     </div>
-
-                    <div class="profile-card">
-                        <h2>Endereço</h2>
-                        <div class="info-item">
-                            <span class="info-label">CEP</span>
-                            <span class="info-value" id="profileCep">01234-567</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">Endereço</span>
-                            <span class="info-value" id="profileAddress">Rua das Flores, 123</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">Bairro</span>
-                            <span class="info-value" id="profileDistrict">Centro</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">Cidade</span>
-                            <span class="info-value" id="profileCity">São Paulo</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">Estado</span>
-                            <span class="info-value" id="profileState">SP</span>
-                        </div>
-                        <button class="btn-edit" style="margin-top: 16px;">Editar Endereço</button>
+                    <div class="info-item">
+                        <span class="info-label">CPF</span>
+                        <span class="info-value" id="profileCpf">123.456.789-00</span>
                     </div>
+                    <div class="info-item">
+                        <span class="info-label">Telefone</span>
+                        <span class="info-value" id="profilePhone">(11) 99999-9999</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">E-mail</span>
+                        <span class="info-value" id="profileEmailValue">joao.silva@email.com</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Data de Nascimento</span>
+                        <span class="info-value" id="profileBirth">15/05/1985</span>
+                    </div>
+                    <button class="btn-edit">Editar Informações</button>
                 </div>
             </div>
         </div>
 
-        <!-- SETTINGS PAGE -->
         <div id="settingsPage" class="main-content hidden">
             <div class="settings-container">
                 <div class="page-header">
@@ -1388,7 +1429,6 @@
         </div>
     </div>
 
-    <!-- SERVICE DETAIL MODAL -->
     <div id="serviceModal" class="modal hidden">
         <div class="modal-content">
             <div class="modal-header">
@@ -1414,9 +1454,7 @@
 
                 <div style="margin-bottom: 20px;">
                     <h3 style="margin-bottom: 8px;">Descrição</h3>
-                    <p id="serviceDescription" style="color: var(--gray);">
-                        Serviço completo de encanamento com garantia e materiais inclusos.
-                    </p>
+                    <p id="serviceDescription" style="color: var(--gray);"></p>
                 </div>
 
                 <div class="chat-box">
@@ -1433,7 +1471,6 @@
         </div>
     </div>
 
-    <!-- ADD SERVICE MODAL -->
     <div id="addServiceModal" class="modal hidden">
         <div class="modal-content">
             <div class="modal-header">
@@ -1468,85 +1505,79 @@
         </div>
     </div>
 
+    <div id="ratingModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Avaliar Serviço</h2>
+                <button class="btn-close" id="closeRatingModal">&times;</button>
+            </div>
+            <div class="modal-body rating-modal">
+                <p style="text-align: center; margin-bottom: 20px;">Como foi sua experiência com este serviço?</p>
+                <div class="stars" id="ratingStars">
+                    <span class="star inactive" data-rating="1">⭐</span>
+                    <span class="star inactive" data-rating="2">⭐</span>
+                    <span class="star inactive" data-rating="3">⭐</span>
+                    <span class="star inactive" data-rating="4">⭐</span>
+                    <span class="star inactive" data-rating="5">⭐</span>
+                </div>
+                <div class="form-group">
+                    <label>Comentário (opcional)</label>
+                    <input type="text" id="ratingComment" placeholder="Deixe um comentário sobre o serviço">
+                </div>
+                <button class="btn btn-primary" id="submitRating">Enviar Avaliação</button>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // Wait for DOM to be fully loaded
         document.addEventListener('DOMContentLoaded', function() {
         
-        // Mock Data
-         const services = [
-            { 
-                id: 1, 
-                title: 'Encanamento Residencial', 
-                provider: 'João Silva', 
-                category: 'encanador', 
-                rating: 4.9, 
-                jobs: 150, 
-                price: 'A combinar', 
-                image: 'https://plus.unsplash.com/premium_photo-1661884973994-d7625e52631a?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1171' 
-            },
-            { 
-                id: 2, 
-                title: 'Instalação Elétrica', 
-                provider: 'Maria Santos', 
-                category: 'eletricista', 
-                rating: 4.8, 
-                jobs: 120, 
-                price: 'A combinar', 
-                image: 'https://images.unsplash.com/photo-1621905252507-b35492cc74b4?w=400&h=300&fit=crop' 
-            },
-            { 
-                id: 3, 
-                title: 'Pintura Residencial', 
-                provider: 'Pedro Costa', 
-                category: 'pintor', 
-                rating: 4.7, 
-                jobs: 98, 
-                price: 'A combinar', 
-                image: 'https://plus.unsplash.com/premium_photo-1683121602687-60c47b2222f0?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1170' 
-            },
-            { 
-                id: 4, 
-                title: 'Manutenção de Jardim', 
-                provider: 'Ana Lima', 
-                category: 'jardineiro', 
-                rating: 4.9, 
-                jobs: 85, 
-                price: 'A combinar', 
-                image: 'https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=400&h=300&fit=crop' 
-            },
-            { 
-                id: 5, 
-                title: 'Limpeza Profunda', 
-                provider: 'Carlos Mendes', 
-                category: 'limpeza', 
-                rating: 4.6, 
-                jobs: 200, 
-                price: 'A combinar', 
-                image: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=400&h=300&fit=crop' 
-            },
-            { 
-                id: 6, 
-                title: 'Móveis Planejados', 
-                provider: 'Roberto Alves', 
-                category: 'marceneiro', 
-                rating: 5.0, 
-                jobs: 65, 
-                price: 'A Combinar', 
-                image: 'https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?w=400&h=300&fit=crop' 
-            },
+        const services = [
+            { id: 1, title: 'Encanamento Residencial', provider: 'João Silva', category: 'encanador', rating: 4.9, jobs: 150, price: 'R$ 80/h', image: 'https://images.unsplash.com/photo-1676210134188-4c05dd172f89?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
+            { id: 2, title: 'Desentupimento 24h', provider: 'Carlos Mendes', category: 'encanador', rating: 4.7, jobs: 98, price: 'R$ 120', image: 'https://media.istockphoto.com/id/2215277348/pt/foto/a-young-woman-using-drain-cleaner-to-unclog-a-toilet-bowl.webp?a=1&b=1&s=612x612&w=0&k=20&c=I88haT7YpdMvcUJuWVKBmojpX_adHswFsU_wiQXIHRY=' },
+            { id: 3, title: 'Instalação de Aquecedor', provider: 'Roberto Lima', category: 'encanador', rating: 4.8, jobs: 75, price: 'A combinar', image: 'https://images.unsplash.com/photo-1585704032915-c3400ca199e7?w=400&h=300&fit=crop' },
+            { id: 4, title: 'Troca de Registros', provider: 'Paulo Santos', category: 'encanador', rating: 4.6, jobs: 62, price: 'R$ 60', image: 'https://images.unsplash.com/photo-1607472586893-edb57bdc0e39?w=400&h=300&fit=crop' },
+            
+            { id: 5, title: 'Instalação Elétrica', provider: 'Jhonatan Pinoleto', category: 'eletricista', rating: 4.8, jobs: 120, price: 'R$ 90/h', image: 'https://images.unsplash.com/photo-1621905252507-b35492cc74b4?w=400&h=300&fit=crop' },
+            { id: 6, title: 'Manutenção de Quadros', provider: 'Fernando Costa', category: 'eletricista', rating: 4.9, jobs: 145, price: 'R$ 100/h', image: 'https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=400&h=300&fit=crop' },
+            { id: 7, title: 'Instalação de Ventiladores', provider: 'André Souza', category: 'eletricista', rating: 4.5, jobs: 88, price: 'R$ 70', image: 'https://plus.unsplash.com/premium_photo-1677172408819-a493426f6e10?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
+            { id: 8, title: 'Troca de Tomadas', provider: 'Lucas Alves', category: 'eletricista', rating: 4.7, jobs: 103, price: 'R$ 50', image: 'https://plus.unsplash.com/premium_photo-1681589433923-33ea0898397f?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
+            
+            { id: 9, title: 'Pintura Residencial', provider: 'Pedro Costa', category: 'pintor', rating: 4.7, jobs: 98, price: 'R$ 35/m²', image: 'https://images.unsplash.com/photo-1562259949-e8e7689d7828?w=400&h=300&fit=crop' },
+            { id: 10, title: 'Pintura Comercial', provider: 'Marcos Silva', category: 'pintor', rating: 4.8, jobs: 115, price: 'A combinar', image: 'https://images.unsplash.com/photo-1544164560-adac3045edb2?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bWFyY2VuYXJpYXxlbnwwfHwwfHx8MA%3D%3D' },
+            { id: 11, title: 'Textura e Grafiato', provider: 'Ricardo Oliveira', category: 'pintor', rating: 4.6, jobs: 67, price: 'R$ 45/m²', image: 'https://images.unsplash.com/photo-1683860296253-61fc00cc01df?q=80&w=765&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
+            { id: 12, title: 'Pintura de Portões', provider: 'Gustavo Rocha', category: 'pintor', rating: 4.5, jobs: 54, price: 'R$ 200', image: 'https://media.istockphoto.com/id/1328835426/pt/foto/painting-fence.webp?a=1&b=1&s=612x612&w=0&k=20&c=zlGmvRXf80FcJl1jP8myTASpMQ6ZW4iaze3o0egeJ9s=' },
+            
+            { id: 13, title: 'Manutenção de Jardim', provider: 'Ana Lima', category: 'jardineiro', rating: 4.9, jobs: 85, price: 'R$ 150', image: 'https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=400&h=300&fit=crop' },
+            { id: 14, title: 'Poda de Árvores', provider: 'José Martins', category: 'jardineiro', rating: 4.7, jobs: 72, price: 'R$ 180', image: 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400&h=300&fit=crop' },
+            { id: 15, title: 'Plantio e Paisagismo', provider: 'Mariana Campos', category: 'jardineiro', rating: 5.0, jobs: 95, price: 'A combinar', image: 'https://images.unsplash.com/photo-1558904541-efa843a96f01?w=400&h=300&fit=crop' },
+            { id: 16, title: 'Corte de Grama', provider: 'Bruno Ferreira', category: 'jardineiro', rating: 4.6, jobs: 110, price: 'R$ 80', image: 'https://plus.unsplash.com/premium_photo-1677691714251-451b79d6de47?q=80&w=685&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
+            
+            { id: 17, title: 'Limpeza Profunda', provider: 'Juliana Costa', category: 'limpeza', rating: 4.8, jobs: 200, price: 'R$ 150', image: 'https://plus.unsplash.com/premium_photo-1679775635446-f36fbe327781?q=80&w=764&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
+            { id: 18, title: 'Limpeza Pós-Obra', provider: 'Sandra Ribeiro', category: 'limpeza', rating: 4.9, jobs: 156, price: 'R$ 300', image: 'https://images.unsplash.com/photo-1628177142898-93e36e4e3a50?w=400&h=300&fit=crop' },
+            { id: 19, title: 'Lavagem de Estofados', provider: 'Patricia Souza', category: 'limpeza', rating: 4.7, jobs: 89, price: 'R$ 120', image: 'https://plus.unsplash.com/premium_photo-1733306538480-f0d59b6edadf?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
+            { id: 20, title: 'Limpeza de Vidros', provider: 'Claudia Mendes', category: 'limpeza', rating: 4.6, jobs: 134, price: 'R$ 100', image: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=400&h=300&fit=crop' },
+            
+            { id: 21, title: 'Móveis Planejados', provider: 'Roberto Alves', category: 'marceneiro', rating: 5.0, jobs: 65, price: 'A combinar', image: 'https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?w=400&h=300&fit=crop' },
+            { id: 22, title: 'Reforma de Móveis', provider: 'Antônio Carvalho', category: 'marceneiro', rating: 4.8, jobs: 78, price: 'A combinar', image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400&h=300&fit=crop' },
+            { id: 23, title: 'Portas e Janelas', provider: 'Eduardo Silva', category: 'marceneiro', rating: 4.7, jobs: 92, price: 'A combinar', image: 'https://plus.unsplash.com/premium_photo-1711412120015-2b9243910324?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
+            { id: 24, title: 'Deck de Madeira', provider: 'Rogério Santos', category: 'marceneiro', rating: 4.9, jobs: 58, price: 'A combinar', image: 'https://media.istockphoto.com/id/1210525529/pt/foto/mekong-cruise-ship-deck-in-sunset.webp?a=1&b=1&s=612x612&w=0&k=20&c=mvJ-6J1IkUP4Pn7pB6k0YULuGnuLrVjukH-9jzJzZng=' },
         ];
         
-        
-        // State
         let currentMode = 'client';
         let currentPage = 'dashboard';
+        let currentCategory = null;
+        let searchQuery = '';
+        let currentRatingService = null;
+        
         let requests = [
-            { id: 1, client: 'Marcos Silva', service: 'Encanamento Urgente', time: 'Há 30min' },
-            { id: 2, client: 'Julia Oliveira', service: 'Instalação Elétrica', time: 'Há 1h' },
-            { id: 3, client: 'Fernando Costa', service: 'Pintura de Sala', time: 'Há 2h' },
+            { id: 1, client: 'Marcos Silva', service: 'Encanamento Urgente', time: 'Há 30min', status: 'pending' },
+            { id: 2, client: 'Julia Oliveira', service: 'Instalação Elétrica', time: 'Há 1h', status: 'pending' },
+            { id: 3, client: 'Fernando Costa', service: 'Pintura de Sala', time: 'Há 2h', status: 'pending' },
         ];
 
-        // User data
+        let acceptedServices = [];
+
         let userData = {
             name: 'João Silva',
             email: 'joao.silva@email.com',
@@ -1554,18 +1585,12 @@
             cpf: '123.456.789-00',
             phone: '(11) 99999-9999',
             birth: '15/05/1985',
-            cep: '01234-567',
-            address: 'Rua das Flores, 123',
-            district: 'Centro',
-            city: 'São Paulo',
-            state: 'SP',
             services: 12,
             rating: 4.9,
             memberSince: 2,
             avatar: 'https://via.placeholder.com/120'
         };
 
-        // Elements
         const loginPage = document.getElementById('loginPage');
         const forgotPasswordPage = document.getElementById('forgotPasswordPage');
         const createAccountPage = document.getElementById('createAccountPage');
@@ -1577,9 +1602,11 @@
         const servicesGrid = document.getElementById('servicesGrid');
         const serviceModal = document.getElementById('serviceModal');
         const addServiceModal = document.getElementById('addServiceModal');
+        const ratingModal = document.getElementById('ratingModal');
         const requestsList = document.getElementById('requestsList');
+        const acceptedList = document.getElementById('acceptedList');
+        const searchInput = document.getElementById('searchInput');
 
-        // Check if user is logged in
         function checkLoginStatus() {
             const isLoggedIn = localStorage.getItem('isLoggedIn');
             if (isLoggedIn === 'true') {
@@ -1591,7 +1618,6 @@
             }
         }
 
-        // Login
         document.getElementById('loginForm').addEventListener('submit', (e) => {
             e.preventDefault();
             localStorage.setItem('isLoggedIn', 'true');
@@ -1602,7 +1628,6 @@
             updateUserAvatar();
         });
 
-        // Logout
         document.getElementById('logoutBtn').addEventListener('click', (e) => {
             e.preventDefault();
             localStorage.setItem('isLoggedIn', 'false');
@@ -1612,35 +1637,30 @@
             showDashboard();
         });
 
-        // Forgot Password Link
         document.getElementById('forgotPasswordLink').addEventListener('click', (e) => {
             e.preventDefault();
             loginPage.classList.add('hidden');
             forgotPasswordPage.classList.remove('hidden');
         });
 
-        // Back to Login from Forgot Password
         document.getElementById('backToLoginFromForgot').addEventListener('click', (e) => {
             e.preventDefault();
             forgotPasswordPage.classList.add('hidden');
             loginPage.classList.remove('hidden');
         });
 
-        // Create Account Link
         document.getElementById('createAccountLink').addEventListener('click', (e) => {
             e.preventDefault();
             loginPage.classList.add('hidden');
             createAccountPage.classList.remove('hidden');
         });
 
-        // Back to Login from Create Account
         document.getElementById('backToLoginFromCreate').addEventListener('click', (e) => {
             e.preventDefault();
             createAccountPage.classList.add('hidden');
             loginPage.classList.remove('hidden');
         });
 
-        // Forgot Password Form
         document.getElementById('forgotPasswordForm').addEventListener('submit', (e) => {
             e.preventDefault();
             alert('Instruções para redefinir sua senha foram enviadas para o e-mail informado.');
@@ -1648,7 +1668,6 @@
             loginPage.classList.remove('hidden');
         });
 
-        // Create Account Form
         document.getElementById('createAccountForm').addEventListener('submit', (e) => {
             e.preventDefault();
             const password = document.getElementById('createPassword').value;
@@ -1664,19 +1683,32 @@
             loginPage.classList.remove('hidden');
         });
 
-        // User Menu Toggle
-        document.getElementById('userMenuBtn').addEventListener('click', () => {
-            document.getElementById('userDropdown').classList.toggle('show');
+        document.getElementById('locationSelector').addEventListener('click', (e) => {
+            e.stopPropagation();
+            document.getElementById('locationDropdown').classList.toggle('show');
         });
 
-        // Close dropdown when clicking outside
+        document.querySelectorAll('.location-item').forEach(item => {
+            item.addEventListener('click', (e) => {
+                const location = item.dataset.location;
+                document.getElementById('currentLocation').textContent = location;
+                document.getElementById('locationDropdown').classList.remove('show');
+            });
+        });
+
         document.addEventListener('click', (e) => {
+            if (!e.target.closest('.location-selector')) {
+                document.getElementById('locationDropdown').classList.remove('show');
+            }
             if (!e.target.closest('.user-menu')) {
                 document.getElementById('userDropdown').classList.remove('show');
             }
         });
 
-        // Profile Link
+        document.getElementById('userMenuBtn').addEventListener('click', () => {
+            document.getElementById('userDropdown').classList.toggle('show');
+        });
+
         document.getElementById('profileLink').addEventListener('click', (e) => {
             e.preventDefault();
             hideAllPages();
@@ -1684,7 +1716,6 @@
             document.getElementById('userDropdown').classList.remove('show');
         });
 
-        // Settings Link
         document.getElementById('settingsLink').addEventListener('click', (e) => {
             e.preventDefault();
             hideAllPages();
@@ -1692,42 +1723,39 @@
             document.getElementById('userDropdown').classList.remove('show');
         });
 
-        // Nav Logo - Go to Dashboard and reset filters
         document.getElementById('navLogo').addEventListener('click', () => {
             hideAllPages();
             showDashboard();
-            renderServices(); // Reset to show all services without filters
+            currentCategory = null;
+            searchQuery = '';
+            searchInput.value = '';
+            document.querySelectorAll('.category-card').forEach(card => card.classList.remove('active'));
+            renderServices();
         });
 
-        // Cancel Settings
         document.getElementById('cancelSettings').addEventListener('click', () => {
             hideAllPages();
             showDashboard();
         });
 
-        // Save Settings
         document.getElementById('saveSettings').addEventListener('click', () => {
             alert('Configurações salvas com sucesso!');
             hideAllPages();
             showDashboard();
         });
 
-        // Upload Photo
         document.getElementById('uploadPhotoBtn').addEventListener('click', () => {
             document.getElementById('uploadPhotoInput').click();
         });
 
-        // Handle photo upload
         document.getElementById('uploadPhotoInput').addEventListener('change', (e) => {
             const file = e.target.files[0];
             if (file) {
                 const reader = new FileReader();
                 reader.onload = function(event) {
                     const imageUrl = event.target.result;
-                    // Update user avatar
                     userData.avatar = imageUrl;
                     updateUserAvatar();
-                    // Save to localStorage
                     localStorage.setItem('userAvatar', imageUrl);
                     alert('Foto atualizada com sucesso!');
                 };
@@ -1735,7 +1763,6 @@
             }
         });
 
-        // Update user avatar
         function updateUserAvatar() {
             const savedAvatar = localStorage.getItem('userAvatar');
             if (savedAvatar) {
@@ -1746,7 +1773,6 @@
             document.getElementById('profileAvatar').src = userData.avatar;
         }
 
-        // Hide all pages
         function hideAllPages() {
             clientView.classList.add('hidden');
             workerView.classList.add('hidden');
@@ -1754,28 +1780,25 @@
             settingsPage.classList.add('hidden');
         }
 
-        // Show dashboard based on current mode
         function showDashboard() {
             if (currentMode === 'client') {
                 clientView.classList.remove('hidden');
             } else {
                 workerView.classList.remove('hidden');
                 renderRequests();
+                renderAcceptedServices();
             }
         }
 
-        // Show profile page
         function showProfile() {
             profilePage.classList.remove('hidden');
             updateProfileData();
         }
 
-        // Show settings page
         function showSettings() {
             settingsPage.classList.remove('hidden');
         }
 
-        // Update profile data
         function updateProfileData() {
             document.getElementById('profileName').textContent = userData.name;
             document.getElementById('profileEmail').textContent = userData.email;
@@ -1789,15 +1812,8 @@
             document.getElementById('profilePhone').textContent = userData.phone;
             document.getElementById('profileEmailValue').textContent = userData.email;
             document.getElementById('profileBirth').textContent = userData.birth;
-            
-            document.getElementById('profileCep').textContent = userData.cep;
-            document.getElementById('profileAddress').textContent = userData.address;
-            document.getElementById('profileDistrict').textContent = userData.district;
-            document.getElementById('profileCity').textContent = userData.city;
-            document.getElementById('profileState').textContent = userData.state;
         }
 
-        // Mode Toggle
         document.querySelectorAll('.mode-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
@@ -1811,34 +1827,50 @@
             });
         });
 
-        // Render Services
-    function renderServices(category = null) {
-        const filtered = category ? services.filter(s => s.category === category) : services;
-        
-        servicesGrid.innerHTML = filtered.map(service => `
-            <div class="service-card" data-id="${service.id}">
-                <div class="service-image">
-                    <img src="${service.image}" alt="${service.title}" style="width: 100%; height: 100%; object-fit: cover;">
+        searchInput.addEventListener('input', (e) => {
+            searchQuery = e.target.value.toLowerCase();
+            renderServices();
+        });
+
+        function renderServices() {
+            let filtered = services;
+            
+            if (currentCategory) {
+                filtered = filtered.filter(s => s.category === currentCategory);
+            }
+            
+            if (searchQuery) {
+                filtered = filtered.filter(s => 
+                    s.title.toLowerCase().includes(searchQuery) ||
+                    s.provider.toLowerCase().includes(searchQuery) ||
+                    s.category.toLowerCase().includes(searchQuery)
+                );
+            }
+            
+            servicesGrid.innerHTML = filtered.map(service => `
+                <div class="service-card" data-id="${service.id}">
+                    <div class="service-image">
+                        <img src="${service.image}" alt="${service.title}">
+                    </div>
+                    <div class="service-content">
+                        <div class="service-title">${service.title}</div>
+                        <div class="service-provider">
+                            <span>👤</span>
+                            <span>${service.provider}</span>
+                        </div>
+                        <div class="rating">
+                            <span>⭐</span>
+                            <span>${service.rating}</span>
+                            <span style="color: var(--gray); margin-left: 8px;">(${service.jobs} trabalhos)</span>
+                        </div>
+                        <div class="service-footer">
+                            <div class="service-price">${service.price}</div>
+                            <button class="btn-contact">Contatar</button>
+                        </div>
+                    </div>
                 </div>
-                <div class="service-content">
-                    <div class="service-title">${service.title}</div>
-                    <div class="service-provider">
-                        <span>👤</span>
-                        <span>${service.provider}</span>
-                    </div>
-                    <div class="rating">
-                        <span>⭐</span>
-                        <span>${service.rating}</span>
-                        <span style="color: var(--gray); margin-left: 8px;">(${service.jobs} trabalhos)</span>
-                    </div>
-                    <div class="service-footer">
-                        <div class="service-price">${service.price}</div>
-                        <button class="btn-contact">Contatar</button>
-                    </div>
-                </div>
-            </div>
-        `).join('');    
-            // Add click events
+            `).join('');
+            
             document.querySelectorAll('.service-card').forEach(card => {
                 card.addEventListener('click', (e) => {
                     if (!e.target.classList.contains('btn-contact')) {
@@ -1858,15 +1890,23 @@
             });
         }
 
-        // Category Filter
         document.querySelectorAll('.category-card').forEach(card => {
             card.addEventListener('click', () => {
                 const category = card.dataset.category;
-                renderServices(category);
+                
+                document.querySelectorAll('.category-card').forEach(c => c.classList.remove('active'));
+                
+                if (currentCategory === category) {
+                    currentCategory = null;
+                } else {
+                    currentCategory = category;
+                    card.classList.add('active');
+                }
+                
+                renderServices();
             });
         });
 
-        // Open Service Modal
         function openServiceModal(id) {
             const service = services.find(s => s.id === id);
             if (!service) return;
@@ -1881,19 +1921,16 @@
             serviceModal.classList.remove('hidden');
         }
 
-        // Close Service Modal
         document.getElementById('closeModal').addEventListener('click', () => {
             serviceModal.classList.add('hidden');
         });
 
-        // Click outside modal to close
         serviceModal.addEventListener('click', (e) => {
             if (e.target === serviceModal) {
                 serviceModal.classList.add('hidden');
             }
         });
 
-        // Chat Functionality
         document.getElementById('sendMessageBtn').addEventListener('click', () => {
             const input = document.getElementById('messageInput');
             const message = input.value.trim();
@@ -1907,7 +1944,6 @@
                 chatMessages.scrollTop = chatMessages.scrollHeight;
                 input.value = '';
 
-                // Simulate response
                 setTimeout(() => {
                     const responseDiv = document.createElement('div');
                     responseDiv.className = 'message received';
@@ -1918,16 +1954,21 @@
             }
         });
 
-        // Enter key to send message
         document.getElementById('messageInput').addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
                 document.getElementById('sendMessageBtn').click();
             }
         });
 
-        // Render Worker Requests
         function renderRequests() {
-            requestsList.innerHTML = requests.map(request => `
+            const pendingRequests = requests.filter(r => r.status === 'pending');
+            
+            if (pendingRequests.length === 0) {
+                requestsList.innerHTML = '<p style="color: var(--gray); text-align: center; padding: 20px;">Nenhuma solicitação pendente</p>';
+                return;
+            }
+            
+            requestsList.innerHTML = pendingRequests.map(request => `
                 <div class="request-item">
                     <div class="request-header">
                         <div>
@@ -1949,50 +1990,140 @@
             `).join('');
         }
 
-        // Accept Request
+        function renderAcceptedServices() {
+            if (acceptedServices.length === 0) {
+                acceptedList.innerHTML = '<p style="color: var(--gray); text-align: center; padding: 20px;">Nenhum serviço aceito ainda</p>';
+                return;
+            }
+            
+            acceptedList.innerHTML = acceptedServices.map(service => `
+                <div class="request-item">
+                    <div class="request-header">
+                        <div>
+                            <div style="font-weight: 600; margin-bottom: 4px;">${service.service}</div>
+                            <div style="color: var(--gray); font-size: 14px;">
+                                <span>👤 ${service.client}</span>
+                                <span style="margin-left: 12px;">✓ Aceito ${service.time}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="color: var(--gray); font-size: 14px; margin-top: 8px;">
+                        Serviço em andamento. Finalize quando concluir o trabalho.
+                    </div>
+                    <div class="request-actions">
+                        <button class="btn-accept" onclick="completeService(${service.id})">Finalizar Serviço</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
         window.acceptRequest = function(id) {
-            alert('Solicitação aceita! O cliente foi notificado.');
             const index = requests.findIndex(r => r.id === id);
             if (index > -1) {
+                const acceptedRequest = requests[index];
+                acceptedRequest.status = 'accepted';
+                acceptedServices.push(acceptedRequest);
                 requests.splice(index, 1);
                 renderRequests();
+                renderAcceptedServices();
                 updateStats();
+                alert('Solicitação aceita! O cliente foi notificado.');
             }
         };
 
-        // Decline Request
         window.declineRequest = function(id) {
             const index = requests.findIndex(r => r.id === id);
             if (index > -1) {
                 requests.splice(index, 1);
                 renderRequests();
                 updateStats();
+                alert('Solicitação recusada.');
             }
         };
 
-        // Update Stats
-        function updateStats() {
-            document.getElementById('requestsCount').textContent = requests.length;
+        window.completeService = function(id) {
+            const index = acceptedServices.findIndex(s => s.id === id);
+            if (index > -1) {
+                currentRatingService = acceptedServices[index];
+                acceptedServices.splice(index, 1);
+                renderAcceptedServices();
+                updateStats();
+                openRatingModal();
+            }
+        };
+
+        function openRatingModal() {
+            ratingModal.classList.remove('hidden');
+            
+            const stars = document.querySelectorAll('#ratingStars .star');
+            stars.forEach(star => {
+                star.classList.remove('active');
+                star.classList.add('inactive');
+            });
         }
 
-        // Add Service Button
+        document.getElementById('closeRatingModal').addEventListener('click', () => {
+            ratingModal.classList.add('hidden');
+        });
+
+        ratingModal.addEventListener('click', (e) => {
+            if (e.target === ratingModal) {
+                ratingModal.classList.add('hidden');
+            }
+        });
+
+        document.querySelectorAll('#ratingStars .star').forEach(star => {
+            star.addEventListener('click', () => {
+                const rating = parseInt(star.dataset.rating);
+                const stars = document.querySelectorAll('#ratingStars .star');
+                
+                stars.forEach((s, index) => {
+                    if (index < rating) {
+                        s.classList.add('active');
+                        s.classList.remove('inactive');
+                    } else {
+                        s.classList.remove('active');
+                        s.classList.add('inactive');
+                    }
+                });
+            });
+        });
+
+        document.getElementById('submitRating').addEventListener('click', () => {
+            const activeStars = document.querySelectorAll('#ratingStars .star.active').length;
+            
+            if (activeStars === 0) {
+                alert('Por favor, selecione uma avaliação');
+                return;
+            }
+            
+            const comment = document.getElementById('ratingComment').value;
+            
+            alert(`Avaliação enviada: ${activeStars} estrelas\nObrigado pelo seu feedback!`);
+            
+            document.getElementById('ratingComment').value = '';
+            ratingModal.classList.add('hidden');
+        });
+
+        function updateStats() {
+            document.getElementById('requestsCount').textContent = requests.filter(r => r.status === 'pending').length;
+            document.getElementById('acceptedCount').textContent = acceptedServices.length;
+        }
+
         document.getElementById('addServiceBtn').addEventListener('click', () => {
             addServiceModal.classList.remove('hidden');
         });
 
-        // Close Add Service Modal
         document.getElementById('closeAddModal').addEventListener('click', () => {
             addServiceModal.classList.add('hidden');
         });
 
-        // Click outside modal to close
         addServiceModal.addEventListener('click', (e) => {
             if (e.target === addServiceModal) {
                 addServiceModal.classList.add('hidden');
             }
         });
 
-        // Add Service Form
         document.getElementById('addServiceForm').addEventListener('submit', (e) => {
             e.preventDefault();
             alert('Serviço publicado com sucesso!');
@@ -2000,42 +2131,32 @@
             e.target.reset();
         });
 
-        // CPF Formatting
-        document.getElementById('cpf').addEventListener('input', (e) => {
-            let value = e.target.value.replace(/\D/g, '');
+        function formatCPF(value) {
+            value = value.replace(/\D/g, '');
             if (value.length <= 11) {
                 value = value.replace(/(\d{3})(\d)/, '$1.$2');
                 value = value.replace(/(\d{3})(\d)/, '$1.$2');
                 value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
             }
-            e.target.value = value;
+            return value;
+        }
+
+        document.getElementById('cpf').addEventListener('input', (e) => {
+            e.target.value = formatCPF(e.target.value);
         });
 
         document.getElementById('forgotCpf').addEventListener('input', (e) => {
-            let value = e.target.value.replace(/\D/g, '');
-            if (value.length <= 11) {
-                value = value.replace(/(\d{3})(\d)/, '$1.$2');
-                value = value.replace(/(\d{3})(\d)/, '$1.$2');
-                value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-            }
-            e.target.value = value;
+            e.target.value = formatCPF(e.target.value);
         });
 
         document.getElementById('createCpf').addEventListener('input', (e) => {
-            let value = e.target.value.replace(/\D/g, '');
-            if (value.length <= 11) {
-                value = value.replace(/(\d{3})(\d)/, '$1.$2');
-                value = value.replace(/(\d{3})(\d)/, '$1.$2');
-                value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-            }
-            e.target.value = value;
+            e.target.value = formatCPF(e.target.value);
         });
 
-        // Initialize
         checkLoginStatus();
         updateStats();
 
-        }); // Fechamento do DOMContentLoaded
+        });
     </script>
 </body>
 </html>
