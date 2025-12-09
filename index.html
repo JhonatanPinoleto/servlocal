@@ -443,8 +443,8 @@
         .service-image {
             width: 100%;
             height: 180px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             overflow: hidden;
+            position: relative;
         }
 
         .service-image img {
@@ -1029,6 +1029,213 @@
             color: var(--border);
         }
 
+        /* Estilos simplificados para os planos */
+        .plans-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .plans-content {
+            background: var(--white);
+            border-radius: 20px;
+            max-width: 800px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: slideUp 0.3s ease;
+            padding: 30px;
+        }
+
+        .plans-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .plan-card {
+            background: var(--white);
+            border: 2px solid var(--border);
+            border-radius: 16px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .plan-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .plan-icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+
+        .plan-title {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .plan-price {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+
+        .plan-price .period {
+            font-size: 16px;
+            color: var(--gray);
+        }
+
+        .plan-description {
+            color: var(--gray);
+            margin-bottom: 20px;
+            font-size: 15px;
+            line-height: 1.5;
+        }
+
+        .btn-plan {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-plan:hover {
+            background: var(--primary-dark);
+        }
+
+        .plan-status {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: var(--shadow);
+        }
+
+        .plan-status h3 {
+            margin-bottom: 12px;
+            font-size: 18px;
+        }
+
+        .plan-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .plan-info:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .plan-info-label {
+            font-weight: 600;
+        }
+
+        .plan-info-value {
+            color: var(--gray);
+        }
+
+        .btn-upgrade {
+            margin-top: 12px;
+            padding: 10px 20px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-upgrade:hover {
+            background: var(--primary-dark);
+        }
+
+        /* Estilos para as fotos dos serviços */
+        .service-gallery {
+            margin: 20px 0;
+        }
+
+        .gallery-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 12px;
+        }
+
+        .gallery-item {
+            border-radius: 8px;
+            overflow: hidden;
+            height: 150px;
+            cursor: pointer;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .photos-limit {
+            font-size: 12px;
+            color: var(--gray);
+            margin-top: 8px;
+            text-align: center;
+        }
+
+        .plan-required {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 30px;
+            margin: 20px 0;
+            text-align: center;
+            box-shadow: var(--shadow);
+            border: 2px solid var(--primary);
+        }
+
+        .plan-required h3 {
+            color: var(--primary);
+            margin-bottom: 12px;
+            font-size: 20px;
+        }
+
+        .plan-required p {
+            color: var(--gray);
+            margin-bottom: 20px;
+        }
+
         @media (max-width: 768px) {
             .categories {
                 grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
@@ -1055,6 +1262,10 @@
             .form-row {
                 flex-direction: column;
                 gap: 0;
+            }
+
+            .plans-grid {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -1204,6 +1415,7 @@
                         <div class="dropdown" id="userDropdown">
                             <a href="#" class="dropdown-item" id="profileLink">Meu Perfil</a>
                             <a href="#" class="dropdown-item" id="settingsLink">Configurações</a>
+                            <a href="#" class="dropdown-item" id="plansLink">Meus Planos</a>
                             <a href="#" class="dropdown-item" id="logoutBtn">Sair</a>
                         </div>
                     </div>
@@ -1247,6 +1459,14 @@
                     <div class="category-icon">🪚</div>
                     <div class="category-name">Marceneiro</div>
                 </div>
+                <div class="category-card" data-category="pedreiro">
+                    <div class="category-icon">🏗️</div>
+                    <div class="category-name">Pedreiro</div>
+                </div>
+                <div class="category-card" data-category="tecnico">
+                    <div class="category-icon">🔧</div>
+                    <div class="category-name">Técnico</div>
+                </div>
             </div>
 
             <div class="services-grid" id="servicesGrid"></div>
@@ -1256,6 +1476,24 @@
             <div class="page-header">
                 <h1 class="page-title">Meu Painel de Trabalho</h1>
                 <p class="page-description">Gerencie suas solicitações e serviços</p>
+            </div>
+
+            <!-- Status do Plano -->
+            <div class="plan-status">
+                <h3>Meu Plano Atual</h3>
+                <div class="plan-info">
+                    <span class="plan-info-label">Plano:</span>
+                    <span class="plan-info-value" id="currentPlanName">Nenhum plano ativo</span>
+                </div>
+                <div class="plan-info">
+                    <span class="plan-info-label">Status:</span>
+                    <span class="plan-info-value" id="currentPlanStatus">Contrate um plano para começar</span>
+                </div>
+                <div class="plan-info">
+                    <span class="plan-info-label">Fotos:</span>
+                    <span class="plan-info-value" id="remainingPhotos">Não disponível</span>
+                </div>
+                <button class="btn-upgrade" id="upgradePlanBtn">Contratar Plano</button>
             </div>
 
             <div class="dashboard-cards">
@@ -1273,7 +1511,7 @@
                 
                 <div class="stat-card">
                     <div class="stat-icon orange">⭐</div>
-                    <div class="stat-value" id="ratingValue">4.8</div>
+                    <div class="stat-value" id="ratingValue">0.0</div>
                     <div class="stat-label">Avaliação Média</div>
                 </div>
             </div>
@@ -1312,16 +1550,16 @@
                         <p id="profileType">Cliente</p>
                         <div class="profile-stats">
                             <div class="profile-stat">
-                                <div class="profile-stat-value" id="profileServices">12</div>
+                                <div class="profile-stat-value" id="profileServices">0</div>
                                 <div class="profile-stat-label">Serviços</div>
                             </div>
                             <div class="profile-stat">
-                                <div class="profile-stat-value" id="profileRating">4.9</div>
+                                <div class="profile-stat-value" id="profileRating">0.0</div>
                                 <div class="profile-stat-label">Avaliação</div>
                             </div>
                             <div class="profile-stat">
-                                <div class="profile-stat-value" id="profileMember">2</div>
-                                <div class="profile-stat-label">Anos</div>
+                                <div class="profile-stat-value" id="profileMember">0</div>
+                                <div class="profile-stat-label">Meses</div>
                             </div>
                         </div>
                     </div>
@@ -1427,8 +1665,41 @@
                 </div>
             </div>
         </div>
+
+        <!-- Página de Planos -->
+        <div id="plansPage" class="main-content hidden">
+            <div class="settings-container">
+                <div class="page-header">
+                    <h1 class="page-title">Meus Planos</h1>
+                    <p class="page-description">Escolha o plano ideal para seu negócio</p>
+                </div>
+
+                <div class="plan-status">
+                    <h3>Plano Atual</h3>
+                    <div class="plan-info">
+                        <span class="plan-info-label">Plano:</span>
+                        <span class="plan-info-value" id="plansPagePlanName">Nenhum plano ativo</span>
+                    </div>
+                    <div class="plan-info">
+                        <span class="plan-info-label">Status:</span>
+                        <span class="plan-info-value" id="plansPagePlanStatus">Contrate um plano para começar</span>
+                    </div>
+                    <div class="plan-info">
+                        <span class="plan-info-label">Validade:</span>
+                        <span class="plan-info-value" id="plansPageExpiry">--/--/----</span>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin: 30px 0;">
+                    <h2 style="margin-bottom: 16px;">Contratar Plano</h2>
+                    <p style="color: var(--gray); margin-bottom: 24px;">Escolha o plano perfeito para alavancar seu negócio</p>
+                    <button class="btn btn-primary" id="viewPlansBtn" style="width: auto; padding: 12px 32px;">Ver Planos Disponíveis</button>
+                </div>
+            </div>
+        </div>
     </div>
 
+    <!-- Modal de Serviço -->
     <div id="serviceModal" class="modal hidden">
         <div class="modal-content">
             <div class="modal-header">
@@ -1457,6 +1728,14 @@
                     <p id="serviceDescription" style="color: var(--gray);"></p>
                 </div>
 
+                <!-- Galeria de Fotos do Serviço -->
+                <div id="serviceGallery" class="service-gallery hidden">
+                    <h3 class="gallery-title">Galeria de Trabalhos Realizados</h3>
+                    <div class="gallery-grid" id="serviceGalleryGrid">
+                        <!-- Fotos serão carregadas via JavaScript -->
+                    </div>
+                </div>
+
                 <div class="chat-box">
                     <h3 style="margin-bottom: 12px;">Chat</h3>
                     <div class="chat-messages" id="chatMessages">
@@ -1471,6 +1750,7 @@
         </div>
     </div>
 
+    <!-- Modal para Adicionar Serviço -->
     <div id="addServiceModal" class="modal hidden">
         <div class="modal-content">
             <div class="modal-header">
@@ -1478,25 +1758,41 @@
                 <button class="btn-close" id="closeAddModal">&times;</button>
             </div>
             <div class="modal-body">
-                <form id="addServiceForm">
+                <div id="planRequiredMessage" class="plan-required hidden">
+                    <h3>Plano Necessário</h3>
+                    <p>Para adicionar serviços, você precisa contratar o Plano Ativo (R$ 69,90/mês).</p>
+                    <button class="btn-upgrade" id="upgradeFromAddService">Ver Planos</button>
+                </div>
+                
+                <form id="addServiceForm" class="hidden">
                     <div class="form-group">
                         <label>Título do Serviço</label>
-                        <input type="text" required placeholder="Ex: Instalação Elétrica">
+                        <input type="text" id="serviceTitle" required placeholder="Ex: Instalação Elétrica">
                     </div>
                     
                     <div class="form-group">
                         <label>Categoria</label>
-                        <input type="text" required placeholder="Ex: Eletricista">
+                        <select id="serviceCategory" required>
+                            <option value="">Selecione...</option>
+                            <option value="encanador">Encanador</option>
+                            <option value="eletricista">Eletricista</option>
+                            <option value="pintor">Pintor</option>
+                            <option value="jardineiro">Jardineiro</option>
+                            <option value="limpeza">Limpeza</option>
+                            <option value="marceneiro">Marceneiro</option>
+                            <option value="pedreiro">Pedreiro</option>
+                            <option value="tecnico">Técnico</option>
+                        </select>
                     </div>
                     
                     <div class="form-group">
                         <label>Descrição</label>
-                        <input type="text" required placeholder="Descreva seu serviço">
+                        <input type="text" id="serviceDescriptionInput" required placeholder="Descreva seu serviço">
                     </div>
                     
                     <div class="form-group">
                         <label>Preço</label>
-                        <input type="text" required placeholder="A combinar">
+                        <input type="text" id="servicePrice" required placeholder="Ex: R$ 80/h ou A combinar">
                     </div>
                     
                     <button type="submit" class="btn btn-primary">Publicar Serviço</button>
@@ -1505,6 +1801,7 @@
         </div>
     </div>
 
+    <!-- Modal de Avaliação -->
     <div id="ratingModal" class="modal hidden">
         <div class="modal-content">
             <div class="modal-header">
@@ -1529,39 +1826,364 @@
         </div>
     </div>
 
+    <!-- Modal de Escolha de Plano SIMPLES -->
+    <div id="plansModal" class="plans-modal hidden">
+        <div class="plans-content">
+            <div style="text-align: center; margin-bottom: 30px;">
+                <h1 style="font-size: 32px; margin-bottom: 8px;">Escolha seu Plano</h1>
+                <p style="color: var(--gray);">Invista no seu sucesso com nossos planos</p>
+            </div>
+            
+            <div class="plans-grid">
+                <!-- Plano Ativo -->
+                <div class="plan-card">
+                    <div class="plan-icon">💼</div>
+                    <h3 class="plan-title">Plano Ativo</h3>
+                    <div class="plan-price">R$ 69,90<span class="period">/mês</span></div>
+                    <p class="plan-description">
+                        Perfil ativo no site, receba convites dos clientes, use o chat para negociar e aceite trabalhos diretamente.
+                    </p>
+                    <button class="btn-plan" data-plan="active">Contratar Plano</button>
+                </div>
+                
+                <!-- Plano Fotos -->
+                <div class="plan-card">
+                    <div class="plan-icon">📸</div>
+                    <h3 class="plan-title">Plano Fotos</h3>
+                    <div class="plan-price">R$ 19,90<span class="period">/mês</span></div>
+                    <p class="plan-description">
+                        Adicione fotos dos seus trabalhos realizados. Mostre seu portfólio para atrair mais clientes e aumentar sua credibilidade.
+                    </p>
+                    <button class="btn-plan" data-plan="photos">Contratar Plano</button>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 30px;">
+                <p style="color: var(--gray); font-size: 14px;">* Planos pagos mensalmente</p>
+                <p style="color: var(--gray); font-size: 14px;">* Cancele quando quiser</p>
+                <button class="btn-close" id="closePlansModal" style="margin-top: 20px;">Fechar</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
         
+        // Lista de serviços com 20+ trabalhos
         const services = [
-            { id: 1, title: 'Encanamento Residencial', provider: 'João Silva', category: 'encanador', rating: 4.9, jobs: 150, price: 'R$ 80/h', image: 'https://images.unsplash.com/photo-1676210134188-4c05dd172f89?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
-            { id: 2, title: 'Desentupimento 24h', provider: 'Carlos Mendes', category: 'encanador', rating: 4.7, jobs: 98, price: 'R$ 120', image: 'https://media.istockphoto.com/id/2215277348/pt/foto/a-young-woman-using-drain-cleaner-to-unclog-a-toilet-bowl.webp?a=1&b=1&s=612x612&w=0&k=20&c=I88haT7YpdMvcUJuWVKBmojpX_adHswFsU_wiQXIHRY=' },
-            { id: 3, title: 'Instalação de Aquecedor', provider: 'Roberto Lima', category: 'encanador', rating: 4.8, jobs: 75, price: 'A combinar', image: 'https://images.unsplash.com/photo-1585704032915-c3400ca199e7?w=400&h=300&fit=crop' },
-            { id: 4, title: 'Troca de Registros', provider: 'Paulo Santos', category: 'encanador', rating: 4.6, jobs: 62, price: 'R$ 60', image: 'https://images.unsplash.com/photo-1607472586893-edb57bdc0e39?w=400&h=300&fit=crop' },
-            
-            { id: 5, title: 'Instalação Elétrica', provider: 'Jhonatan Pinoleto', category: 'eletricista', rating: 4.8, jobs: 120, price: 'R$ 90/h', image: 'https://images.unsplash.com/photo-1621905252507-b35492cc74b4?w=400&h=300&fit=crop' },
-            { id: 6, title: 'Manutenção de Quadros', provider: 'Fernando Costa', category: 'eletricista', rating: 4.9, jobs: 145, price: 'R$ 100/h', image: 'https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=400&h=300&fit=crop' },
-            { id: 7, title: 'Instalação de Ventiladores', provider: 'André Souza', category: 'eletricista', rating: 4.5, jobs: 88, price: 'R$ 70', image: 'https://plus.unsplash.com/premium_photo-1677172408819-a493426f6e10?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
-            { id: 8, title: 'Troca de Tomadas', provider: 'Lucas Alves', category: 'eletricista', rating: 4.7, jobs: 103, price: 'R$ 50', image: 'https://plus.unsplash.com/premium_photo-1681589433923-33ea0898397f?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
-            
-            { id: 9, title: 'Pintura Residencial', provider: 'Pedro Costa', category: 'pintor', rating: 4.7, jobs: 98, price: 'R$ 35/m²', image: 'https://images.unsplash.com/photo-1562259949-e8e7689d7828?w=400&h=300&fit=crop' },
-            { id: 10, title: 'Pintura Comercial', provider: 'Marcos Silva', category: 'pintor', rating: 4.8, jobs: 115, price: 'A combinar', image: 'https://images.unsplash.com/photo-1544164560-adac3045edb2?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bWFyY2VuYXJpYXxlbnwwfHwwfHx8MA%3D%3D' },
-            { id: 11, title: 'Textura e Grafiato', provider: 'Ricardo Oliveira', category: 'pintor', rating: 4.6, jobs: 67, price: 'R$ 45/m²', image: 'https://images.unsplash.com/photo-1683860296253-61fc00cc01df?q=80&w=765&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
-            { id: 12, title: 'Pintura de Portões', provider: 'Gustavo Rocha', category: 'pintor', rating: 4.5, jobs: 54, price: 'R$ 200', image: 'https://media.istockphoto.com/id/1328835426/pt/foto/painting-fence.webp?a=1&b=1&s=612x612&w=0&k=20&c=zlGmvRXf80FcJl1jP8myTASpMQ6ZW4iaze3o0egeJ9s=' },
-            
-            { id: 13, title: 'Manutenção de Jardim', provider: 'Ana Lima', category: 'jardineiro', rating: 4.9, jobs: 85, price: 'R$ 150', image: 'https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=400&h=300&fit=crop' },
-            { id: 14, title: 'Poda de Árvores', provider: 'José Martins', category: 'jardineiro', rating: 4.7, jobs: 72, price: 'R$ 180', image: 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400&h=300&fit=crop' },
-            { id: 15, title: 'Plantio e Paisagismo', provider: 'Mariana Campos', category: 'jardineiro', rating: 5.0, jobs: 95, price: 'A combinar', image: 'https://images.unsplash.com/photo-1558904541-efa843a96f01?w=400&h=300&fit=crop' },
-            { id: 16, title: 'Corte de Grama', provider: 'Bruno Ferreira', category: 'jardineiro', rating: 4.6, jobs: 110, price: 'R$ 80', image: 'https://plus.unsplash.com/premium_photo-1677691714251-451b79d6de47?q=80&w=685&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
-            
-            { id: 17, title: 'Limpeza Profunda', provider: 'Juliana Costa', category: 'limpeza', rating: 4.8, jobs: 200, price: 'R$ 150', image: 'https://plus.unsplash.com/premium_photo-1679775635446-f36fbe327781?q=80&w=764&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
-            { id: 18, title: 'Limpeza Pós-Obra', provider: 'Sandra Ribeiro', category: 'limpeza', rating: 4.9, jobs: 156, price: 'R$ 300', image: 'https://images.unsplash.com/photo-1628177142898-93e36e4e3a50?w=400&h=300&fit=crop' },
-            { id: 19, title: 'Lavagem de Estofados', provider: 'Patricia Souza', category: 'limpeza', rating: 4.7, jobs: 89, price: 'R$ 120', image: 'https://plus.unsplash.com/premium_photo-1733306538480-f0d59b6edadf?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
-            { id: 20, title: 'Limpeza de Vidros', provider: 'Claudia Mendes', category: 'limpeza', rating: 4.6, jobs: 134, price: 'R$ 100', image: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=400&h=300&fit=crop' },
-            
-            { id: 21, title: 'Móveis Planejados', provider: 'Roberto Alves', category: 'marceneiro', rating: 5.0, jobs: 65, price: 'A combinar', image: 'https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?w=400&h=300&fit=crop' },
-            { id: 22, title: 'Reforma de Móveis', provider: 'Antônio Carvalho', category: 'marceneiro', rating: 4.8, jobs: 78, price: 'A combinar', image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400&h=300&fit=crop' },
-            { id: 23, title: 'Portas e Janelas', provider: 'Eduardo Silva', category: 'marceneiro', rating: 4.7, jobs: 92, price: 'A combinar', image: 'https://plus.unsplash.com/premium_photo-1711412120015-2b9243910324?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
-            { id: 24, title: 'Deck de Madeira', provider: 'Rogério Santos', category: 'marceneiro', rating: 4.9, jobs: 58, price: 'A combinar', image: 'https://media.istockphoto.com/id/1210525529/pt/foto/mekong-cruise-ship-deck-in-sunset.webp?a=1&b=1&s=612x612&w=0&k=20&c=mvJ-6J1IkUP4Pn7pB6k0YULuGnuLrVjukH-9jzJzZng=' },
+            { 
+                id: 1, 
+                title: 'Encanamento Residencial', 
+                provider: 'João Silva', 
+                category: 'encanador', 
+                rating: 4.9, 
+                jobs: 150, 
+                price: 'R$ 80/h', 
+                image: 'https://images.unsplash.com/photo-1676210134188-4c05dd172f89?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+                hasPhotos: false 
+            },
+            { 
+                id: 2, 
+                title: 'Desentupimento 24h', 
+                provider: 'Carlos Mendes', 
+                category: 'encanador', 
+                rating: 4.7, 
+                jobs: 98, 
+                price: 'R$ 120', 
+                image: 'https://media.istockphoto.com/id/2215277348/pt/foto/a-young-woman-using-drain-cleaner-to-unclog-a-toilet-bowl.webp?a=1&b=1&s=612x612&w=0&k=20&c=I88haT7YpdMvcUJuWVKBmojpX_adHswFsU_wiQXIHRY=',
+                hasPhotos: false 
+            },
+            { 
+                id: 3, 
+                title: 'Instalação de Aquecedor', 
+                provider: 'Roberto Lima', 
+                category: 'encanador', 
+                rating: 4.8, 
+                jobs: 75, 
+                price: 'A combinar', 
+                image: 'https://images.unsplash.com/photo-1585704032915-c3400ca199e7?w=400&h=300&fit=crop',
+                hasPhotos: false 
+            },
+            { 
+                id: 4, 
+                title: 'Troca de Registros', 
+                provider: 'Paulo Santos', 
+                category: 'encanador', 
+                rating: 4.6, 
+                jobs: 62, 
+                price: 'R$ 60', 
+                image: 'https://images.unsplash.com/photo-1607472586893-edb57bdc0e39?w=400&h=300&fit=crop',
+                hasPhotos: false 
+            },
+            { 
+                id: 5, 
+                title: 'Instalação Elétrica', 
+                provider: 'Jhonatan Pinoleto', 
+                category: 'eletricista', 
+                rating: 4.8, 
+                jobs: 120, 
+                price: 'R$ 90/h', 
+                image: 'https://images.unsplash.com/photo-1621905252507-b35492cc74b4?w=400&h=300&fit=crop',
+                hasPhotos: false 
+            },
+            { 
+                id: 6, 
+                title: 'Manutenção de Quadros', 
+                provider: 'Fernando Costa', 
+                category: 'eletricista', 
+                rating: 4.9, 
+                jobs: 145, 
+                price: 'R$ 100/h', 
+                image: 'https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=400&h=300&fit=crop',
+                hasPhotos: false 
+            },
+            { 
+                id: 7, 
+                title: 'Instalação de Ventiladores', 
+                provider: 'André Souza', 
+                category: 'eletricista', 
+                rating: 4.5, 
+                jobs: 88, 
+                price: 'R$ 70', 
+                image: 'https://plus.unsplash.com/premium_photo-1677172408819-a493426f6e10?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+                hasPhotos: false 
+            },
+            { 
+                id: 8, 
+                title: 'Troca de Tomadas', 
+                provider: 'Lucas Alves', 
+                category: 'eletricista', 
+                rating: 4.7, 
+                jobs: 103, 
+                price: 'R$ 50', 
+                image: 'https://plus.unsplash.com/premium_photo-1681589433923-33ea0898397f?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+                hasPhotos: false 
+            },
+            { 
+                id: 9, 
+                title: 'Pintura Residencial', 
+                provider: 'Pedro Costa', 
+                category: 'pintor', 
+                rating: 4.7, 
+                jobs: 98, 
+                price: 'R$ 35/m²', 
+                image: 'https://images.unsplash.com/photo-1562259949-e8e7689d7828?w=400&h=300&fit=crop',
+                hasPhotos: false 
+            },
+            { 
+                id: 10, 
+                title: 'Pintura Comercial', 
+                provider: 'Marcos Silva', 
+                category: 'pintor', 
+                rating: 4.8, 
+                jobs: 115, 
+                price: 'A combinar', 
+                image: 'https://images.unsplash.com/photo-1544164560-adac3045edb2?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bWFyY2VuYXJpYXxlbnwwfHwwfHx8MA%3D%3D',
+                hasPhotos: false 
+            },
+            { 
+                id: 11, 
+                title: 'Textura e Grafiato', 
+                provider: 'Ricardo Oliveira', 
+                category: 'pintor', 
+                rating: 4.6, 
+                jobs: 67, 
+                price: 'R$ 45/m²', 
+                image: 'https://images.unsplash.com/photo-1683860296253-61fc00cc01df?q=80&w=765&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+                hasPhotos: false 
+            },
+            { 
+                id: 12, 
+                title: 'Pintura de Portões', 
+                provider: 'Gustavo Rocha', 
+                category: 'pintor', 
+                rating: 4.5, 
+                jobs: 54, 
+                price: 'R$ 200', 
+                image: 'https://media.istockphoto.com/id/1328835426/pt/foto/painting-fence.webp?a=1&b=1&s=612x612&w=0&k=20&c=zlGmvRXf80FcJl1jP8myTASpMQ6ZW4iaze3o0egeJ9s=',
+                hasPhotos: false 
+            },
+            { 
+                id: 13, 
+                title: 'Manutenção de Jardim', 
+                provider: 'Ana Lima', 
+                category: 'jardineiro', 
+                rating: 4.9, 
+                jobs: 85, 
+                price: 'R$ 150', 
+                image: 'https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=400&h=300&fit=crop',
+                hasPhotos: false 
+            },
+            { 
+                id: 14, 
+                title: 'Poda de Árvores', 
+                provider: 'José Martins', 
+                category: 'jardineiro', 
+                rating: 4.7, 
+                jobs: 72, 
+                price: 'R$ 180', 
+                image: 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400&h=300&fit=crop',
+                hasPhotos: false 
+            },
+            { 
+                id: 15, 
+                title: 'Plantio e Paisagismo', 
+                provider: 'Mariana Campos', 
+                category: 'jardineiro', 
+                rating: 5.0, 
+                jobs: 95, 
+                price: 'A combinar', 
+                image: 'https://images.unsplash.com/photo-1558904541-efa843a96f01?w=400&h=300&fit=crop',
+                hasPhotos: false 
+            },
+            { 
+                id: 16, 
+                title: 'Corte de Grama', 
+                provider: 'Bruno Ferreira', 
+                category: 'jardineiro', 
+                rating: 4.6, 
+                jobs: 110, 
+                price: 'R$ 80', 
+                image: 'https://plus.unsplash.com/premium_photo-1677691714251-451b79d6de47?q=80&w=685&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+                hasPhotos: false 
+            },
+            { 
+                id: 17, 
+                title: 'Limpeza Profunda', 
+                provider: 'Juliana Costa', 
+                category: 'limpeza', 
+                rating: 4.8, 
+                jobs: 200, 
+                price: 'R$ 150', 
+                image: 'https://plus.unsplash.com/premium_photo-1679775635446-f36fbe327781?q=80&w=764&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+                hasPhotos: false 
+            },
+            { 
+                id: 18, 
+                title: 'Limpeza Pós-Obra', 
+                provider: 'Sandra Ribeiro', 
+                category: 'limpeza', 
+                rating: 4.9, 
+                jobs: 156, 
+                price: 'R$ 300', 
+                image: 'https://images.unsplash.com/photo-1628177142898-93e36e4e3a50?w=400&h=300&fit=crop',
+                hasPhotos: false 
+            },
+            { 
+                id: 19, 
+                title: 'Lavagem de Estofados', 
+                provider: 'Patricia Souza', 
+                category: 'limpeza', 
+                rating: 4.7, 
+                jobs: 89, 
+                price: 'R$ 120', 
+                image: 'https://plus.unsplash.com/premium_photo-1733306538480-f0d59b6edadf?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+                hasPhotos: false 
+            },
+            { 
+                id: 20, 
+                title: 'Limpeza de Vidros', 
+                provider: 'Claudia Mendes', 
+                category: 'limpeza', 
+                rating: 4.6, 
+                jobs: 134, 
+                price: 'R$ 100', 
+                image: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=400&h=300&fit=crop',
+                hasPhotos: false 
+            },
+            { 
+                id: 21, 
+                title: 'Móveis Planejados', 
+                provider: 'Rodrigo Alves', 
+                category: 'marceneiro', 
+                rating: 5.0, 
+                jobs: 65, 
+                price: 'A combinar', 
+                image: 'https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?w=400&h=300&fit=crop',
+                hasPhotos: true,
+                photos: [
+                    'https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8ZnVybml0dXJlfGVufDB8fDB8fHww',
+                    'https://images.unsplash.com/photo-1540574163026-643ea20ade25?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8ZnVybml0dXJlfGVufDB8fDB8fHww',
+                    'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8ZnVybml0dXJlfGVufDB8fDB8fHww'
+                ]
+            },
+            { 
+                id: 22, 
+                title: 'Reforma de Móveis', 
+                provider: 'Antônio Carvalho', 
+                category: 'marceneiro', 
+                rating: 4.8, 
+                jobs: 78, 
+                price: 'A combinar', 
+                image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400&h=300&fit=crop',
+                hasPhotos: false
+            },
+            { 
+                id: 23, 
+                title: 'Portas e Janelas', 
+                provider: 'Eduardo Silva', 
+                category: 'marceneiro', 
+                rating: 4.7, 
+                jobs: 92, 
+                price: 'A combinar', 
+                image: 'https://plus.unsplash.com/premium_photo-1711412120015-2b9243910324?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+                hasPhotos: false
+            },
+            { 
+                id: 24, 
+                title: 'Deck de Madeira', 
+                provider: 'Rogério Santos', 
+                category: 'marceneiro', 
+                rating: 4.9, 
+                jobs: 58, 
+                price: 'A combinar', 
+                image: 'https://media.istockphoto.com/id/1210525529/pt/foto/mekong-cruise-ship-deck-in-sunset.webp?a=1&b=1&s=612x612&w=0&k=20&c=mvJ-6J1IkUP4Pn7pB6k0YULuGnuLrVjukH-9jzJzZng=',
+                hasPhotos: false
+            },
+            { 
+                id: 25, 
+                title: 'Alvenaria Completa', 
+                provider: 'Márcio Oliveira', 
+                category: 'pedreiro', 
+                rating: 4.8, 
+                jobs: 120, 
+                price: 'R$ 45/m²', 
+                image: 'https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=400&h=300&fit=crop',
+                hasPhotos: false
+            },
+            { 
+                id: 26, 
+                title: 'Assentamento de Pisos', 
+                provider: 'Carlos Alberto', 
+                category: 'pedreiro', 
+                rating: 4.9, 
+                jobs: 95, 
+                price: 'R$ 35/m²', 
+                image: 'https://images.unsplash.com/photo-1581092160607-ee22621f8a6a?w=400&h=300&fit=crop',
+                hasPhotos: false
+            },
+            { 
+                id: 27, 
+                title: 'Manutenção de Ar Condicionado', 
+                provider: 'Roberto Carlos', 
+                category: 'tecnico', 
+                rating: 4.7, 
+                jobs: 110, 
+                price: 'R$ 120', 
+                image: 'https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=400&h=300&fit=crop',
+                hasPhotos: false
+            },
+            { 
+                id: 28, 
+                title: 'Reparo de Geladeiras', 
+                provider: 'José Antônio', 
+                category: 'tecnico', 
+                rating: 4.6, 
+                jobs: 85, 
+                price: 'R$ 90', 
+                image: 'https://images.unsplash.com/photo-1581092580497-e0d4cb184827?w=400&h=300&fit=crop',
+                hasPhotos: false
+            }
         ];
         
         let currentMode = 'client';
@@ -1570,6 +2192,19 @@
         let searchQuery = '';
         let currentRatingService = null;
         
+        // Sistema de Dois Planos SIMPLES
+        let currentPlan = {
+            name: 'none',
+            type: 'Nenhum',
+            price: 0,
+            active: false,
+            expiryDate: null,
+            canAddServices: false,
+            canAddPhotos: false,
+            canReceiveRequests: false,
+            canUseChat: false
+        };
+
         let requests = [
             { id: 1, client: 'Marcos Silva', service: 'Encanamento Urgente', time: 'Há 30min', status: 'pending' },
             { id: 2, client: 'Julia Oliveira', service: 'Instalação Elétrica', time: 'Há 1h', status: 'pending' },
@@ -1585,12 +2220,13 @@
             cpf: '123.456.789-00',
             phone: '(11) 99999-9999',
             birth: '15/05/1985',
-            services: 12,
-            rating: 4.9,
-            memberSince: 2,
+            services: 0,
+            rating: 0.0,
+            memberSince: 0,
             avatar: 'https://via.placeholder.com/120'
         };
 
+        // Elementos principais
         const loginPage = document.getElementById('loginPage');
         const forgotPasswordPage = document.getElementById('forgotPasswordPage');
         const createAccountPage = document.getElementById('createAccountPage');
@@ -1599,10 +2235,12 @@
         const workerView = document.getElementById('workerView');
         const profilePage = document.getElementById('profilePage');
         const settingsPage = document.getElementById('settingsPage');
+        const plansPage = document.getElementById('plansPage');
         const servicesGrid = document.getElementById('servicesGrid');
         const serviceModal = document.getElementById('serviceModal');
         const addServiceModal = document.getElementById('addServiceModal');
         const ratingModal = document.getElementById('ratingModal');
+        const plansModal = document.getElementById('plansModal');
         const requestsList = document.getElementById('requestsList');
         const acceptedList = document.getElementById('acceptedList');
         const searchInput = document.getElementById('searchInput');
@@ -1612,12 +2250,15 @@
             if (isLoggedIn === 'true') {
                 loginPage.classList.add('hidden');
                 mainApp.classList.remove('hidden');
+                loadPlanFromStorage();
                 renderServices();
                 updateStats();
                 updateUserAvatar();
+                updatePlanStatus();
             }
         }
 
+        // Sistema de Login
         document.getElementById('loginForm').addEventListener('submit', (e) => {
             e.preventDefault();
             localStorage.setItem('isLoggedIn', 'true');
@@ -1626,6 +2267,7 @@
             renderServices();
             updateStats();
             updateUserAvatar();
+            updatePlanStatus();
         });
 
         document.getElementById('logoutBtn').addEventListener('click', (e) => {
@@ -1637,6 +2279,7 @@
             showDashboard();
         });
 
+        // Navegação entre páginas de login
         document.getElementById('forgotPasswordLink').addEventListener('click', (e) => {
             e.preventDefault();
             loginPage.classList.add('hidden');
@@ -1672,17 +2315,134 @@
             e.preventDefault();
             const password = document.getElementById('createPassword').value;
             const confirmPassword = document.getElementById('confirmPassword').value;
+            const accountType = document.getElementById('accountType').value;
             
             if (password !== confirmPassword) {
                 alert('As senhas não coincidem. Por favor, tente novamente.');
                 return;
             }
             
-            alert('Conta criada com sucesso! Faça login para continuar.');
-            createAccountPage.classList.add('hidden');
-            loginPage.classList.remove('hidden');
+            if (accountType === 'worker') {
+                // Se for profissional, salvar dados
+                userData.type = 'worker';
+                userData.name = document.getElementById('createName').value + ' ' + document.getElementById('createLastName').value;
+                userData.email = document.getElementById('createEmail').value;
+                userData.cpf = document.getElementById('createCpf').value;
+                
+                alert('Conta criada com sucesso! Agora escolha seu plano para começar a trabalhar.');
+                createAccountPage.classList.add('hidden');
+                loginPage.classList.remove('hidden');
+            } else {
+                // Se for cliente, criar conta normalmente
+                userData.type = 'client';
+                alert('Conta criada com sucesso! Faça login para continuar.');
+                createAccountPage.classList.add('hidden');
+                loginPage.classList.remove('hidden');
+            }
         });
 
+        // Sistema de Planos
+        function showPlansModal() {
+            plansModal.classList.remove('hidden');
+        }
+
+        function closePlansModal() {
+            plansModal.classList.add('hidden');
+        }
+
+        document.getElementById('closePlansModal').addEventListener('click', closePlansModal);
+        
+        plansModal.addEventListener('click', (e) => {
+            if (e.target === plansModal) {
+                closePlansModal();
+            }
+        });
+
+        document.querySelectorAll('.btn-plan').forEach(button => {
+            button.addEventListener('click', function() {
+                const plan = this.dataset.plan;
+                selectPlan(plan);
+            });
+        });
+
+        function selectPlan(planType) {
+            switch(planType) {
+                case 'active':
+                    currentPlan = {
+                        name: 'active',
+                        type: 'Plano Ativo',
+                        price: 69.90,
+                        active: true,
+                        expiryDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+                        canAddServices: true,
+                        canAddPhotos: false,
+                        canReceiveRequests: true,
+                        canUseChat: true
+                    };
+                    break;
+                    
+                case 'photos':
+                    currentPlan = {
+                        name: 'photos',
+                        type: 'Plano Fotos',
+                        price: 19.90,
+                        active: true,
+                        expiryDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+                        canAddServices: false,
+                        canAddPhotos: true,
+                        canReceiveRequests: false,
+                        canUseChat: false
+                    };
+                    break;
+            }
+            
+            savePlanToStorage();
+            updatePlanStatus();
+            closePlansModal();
+            alert(`Plano ${currentPlan.type} ativado com sucesso!\nValor: R$ ${currentPlan.price.toFixed(2)}/mês`);
+            // Aqui você integraria com um gateway de pagamento
+        }
+
+        function savePlanToStorage() {
+            localStorage.setItem('userPlan', JSON.stringify(currentPlan));
+        }
+
+        function loadPlanFromStorage() {
+            const savedPlan = localStorage.getItem('userPlan');
+            if (savedPlan) {
+                currentPlan = JSON.parse(savedPlan);
+                if (currentPlan.expiryDate) {
+                    currentPlan.expiryDate = new Date(currentPlan.expiryDate);
+                }
+            }
+        }
+
+        function updatePlanStatus() {
+            const remainingDays = currentPlan.expiryDate ? 
+                Math.ceil((currentPlan.expiryDate - new Date()) / (1000 * 60 * 60 * 24)) : 0;
+            
+            // Atualizar na página do profissional
+            document.getElementById('currentPlanName').textContent = currentPlan.active ? currentPlan.type : 'Nenhum plano ativo';
+            document.getElementById('currentPlanStatus').textContent = 
+                currentPlan.active 
+                    ? `Válido por mais ${remainingDays} dias`
+                    : 'Contrate um plano para começar';
+            document.getElementById('remainingPhotos').textContent = 
+                currentPlan.canAddPhotos ? 'Disponível' : 'Não disponível';
+            
+            // Atualizar na página de planos
+            document.getElementById('plansPagePlanName').textContent = currentPlan.active ? currentPlan.type : 'Nenhum plano ativo';
+            document.getElementById('plansPagePlanStatus').textContent = currentPlan.active ? 'Ativo' : 'Inativo';
+            document.getElementById('plansPageExpiry').textContent = 
+                currentPlan.expiryDate 
+                    ? currentPlan.expiryDate.toLocaleDateString('pt-BR')
+                    : '--/--/----';
+            
+            // Atualizar nome do usuário
+            document.getElementById('userName').textContent = userData.name.split(' ')[0];
+        }
+
+        // Atualizar localização
         document.getElementById('locationSelector').addEventListener('click', (e) => {
             e.stopPropagation();
             document.getElementById('locationDropdown').classList.toggle('show');
@@ -1705,6 +2465,7 @@
             }
         });
 
+        // Menu do usuário
         document.getElementById('userMenuBtn').addEventListener('click', () => {
             document.getElementById('userDropdown').classList.toggle('show');
         });
@@ -1723,6 +2484,13 @@
             document.getElementById('userDropdown').classList.remove('show');
         });
 
+        document.getElementById('plansLink').addEventListener('click', (e) => {
+            e.preventDefault();
+            hideAllPages();
+            showPlansPage();
+            document.getElementById('userDropdown').classList.remove('show');
+        });
+
         document.getElementById('navLogo').addEventListener('click', () => {
             hideAllPages();
             showDashboard();
@@ -1733,6 +2501,123 @@
             renderServices();
         });
 
+        function hideAllPages() {
+            clientView.classList.add('hidden');
+            workerView.classList.add('hidden');
+            profilePage.classList.add('hidden');
+            settingsPage.classList.add('hidden');
+            plansPage.classList.add('hidden');
+        }
+
+        function showDashboard() {
+            if (currentMode === 'client') {
+                clientView.classList.remove('hidden');
+            } else {
+                workerView.classList.remove('hidden');
+                renderRequests();
+                renderAcceptedServices();
+                
+                // Se for profissional sem plano, mostrar modal de planos
+                if (!currentPlan.active) {
+                    setTimeout(() => {
+                        showPlansModal();
+                    }, 1000);
+                }
+            }
+        }
+
+        function showProfile() {
+            profilePage.classList.remove('hidden');
+            updateProfileData();
+        }
+
+        function showSettings() {
+            settingsPage.classList.remove('hidden');
+        }
+
+        function showPlansPage() {
+            plansPage.classList.remove('hidden');
+            updatePlanStatus();
+        }
+
+        // Botão de upgrade
+        document.getElementById('upgradePlanBtn').addEventListener('click', () => {
+            showPlansModal();
+        });
+
+        document.getElementById('viewPlansBtn').addEventListener('click', () => {
+            hideAllPages();
+            showPlansModal();
+        });
+
+        document.getElementById('upgradeFromAddService').addEventListener('click', () => {
+            addServiceModal.classList.add('hidden');
+            showPlansModal();
+        });
+
+        // Botão para adicionar serviços
+        document.getElementById('addServiceBtn').addEventListener('click', () => {
+            if (!currentPlan.active || !currentPlan.canAddServices) {
+                // Mostrar que precisa do Plano Ativo
+                document.getElementById('planRequiredMessage').classList.remove('hidden');
+                document.getElementById('addServiceForm').classList.add('hidden');
+            } else {
+                // Mostrar formulário normal
+                document.getElementById('planRequiredMessage').classList.add('hidden');
+                document.getElementById('addServiceForm').classList.remove('hidden');
+            }
+            addServiceModal.classList.remove('hidden');
+        });
+
+        // Fechar modal de adicionar serviço
+        document.getElementById('closeAddModal').addEventListener('click', () => {
+            addServiceModal.classList.add('hidden');
+        });
+
+        addServiceModal.addEventListener('click', (e) => {
+            if (e.target === addServiceModal) {
+                addServiceModal.classList.add('hidden');
+            }
+        });
+
+        // Formulário de adicionar serviço
+        document.getElementById('addServiceForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            if (!currentPlan.active || !currentPlan.canAddServices) {
+                alert('Você precisa do Plano Ativo (R$ 69,90/mês) para adicionar serviços.');
+                return;
+            }
+            
+            const title = document.getElementById('serviceTitle').value;
+            const category = document.getElementById('serviceCategory').value;
+            const description = document.getElementById('serviceDescriptionInput').value;
+            const price = document.getElementById('servicePrice').value;
+            
+            // Adicionar novo serviço
+            const newId = services.length + 1;
+            services.push({
+                id: newId,
+                title: title,
+                provider: userData.name,
+                category: category,
+                rating: 5.0,
+                jobs: 0,
+                price: price,
+                image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=400&h=300&fit=crop',
+                hasPhotos: currentPlan.canAddPhotos // Se tem plano de fotos
+            });
+            
+            alert('Serviço publicado com sucesso!');
+            addServiceModal.classList.add('hidden');
+            document.getElementById('addServiceForm').reset();
+            
+            // Atualizar estatísticas
+            userData.services++;
+            updateProfileData();
+        });
+
+        // Configurações
         document.getElementById('cancelSettings').addEventListener('click', () => {
             hideAllPages();
             showDashboard();
@@ -1773,32 +2658,6 @@
             document.getElementById('profileAvatar').src = userData.avatar;
         }
 
-        function hideAllPages() {
-            clientView.classList.add('hidden');
-            workerView.classList.add('hidden');
-            profilePage.classList.add('hidden');
-            settingsPage.classList.add('hidden');
-        }
-
-        function showDashboard() {
-            if (currentMode === 'client') {
-                clientView.classList.remove('hidden');
-            } else {
-                workerView.classList.remove('hidden');
-                renderRequests();
-                renderAcceptedServices();
-            }
-        }
-
-        function showProfile() {
-            profilePage.classList.remove('hidden');
-            updateProfileData();
-        }
-
-        function showSettings() {
-            settingsPage.classList.remove('hidden');
-        }
-
         function updateProfileData() {
             document.getElementById('profileName').textContent = userData.name;
             document.getElementById('profileEmail').textContent = userData.email;
@@ -1814,6 +2673,7 @@
             document.getElementById('profileBirth').textContent = userData.birth;
         }
 
+        // Trocar modo cliente/profissional
         document.querySelectorAll('.mode-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
@@ -1827,6 +2687,7 @@
             });
         });
 
+        // Sistema de busca
         searchInput.addEventListener('input', (e) => {
             searchQuery = e.target.value.toLowerCase();
             renderServices();
@@ -1851,6 +2712,7 @@
                 <div class="service-card" data-id="${service.id}">
                     <div class="service-image">
                         <img src="${service.image}" alt="${service.title}">
+                        ${service.hasPhotos ? '<div style="position: absolute; top: 8px; right: 8px; background: rgba(0,0,0,0.7); color: white; padding: 4px 8px; border-radius: 12px; font-size: 12px;">📸 Com fotos</div>' : ''}
                     </div>
                     <div class="service-content">
                         <div class="service-title">${service.title}</div>
@@ -1890,6 +2752,7 @@
             });
         }
 
+        // Sistema de categorias
         document.querySelectorAll('.category-card').forEach(card => {
             card.addEventListener('click', () => {
                 const category = card.dataset.category;
@@ -1918,6 +2781,21 @@
             document.getElementById('serviceDescription').textContent = 
                 `Serviço completo de ${service.title.toLowerCase()} com garantia e materiais inclusos. Profissional experiente e qualificado.`;
 
+            // Mostrar galeria se o serviço tiver fotos
+            const gallery = document.getElementById('serviceGallery');
+            const galleryGrid = document.getElementById('serviceGalleryGrid');
+            
+            if (service.hasPhotos && service.photos) {
+                gallery.classList.remove('hidden');
+                galleryGrid.innerHTML = service.photos.map(photo => `
+                    <div class="gallery-item">
+                        <img src="${photo}" alt="Trabalho realizado">
+                    </div>
+                `).join('');
+            } else {
+                gallery.classList.add('hidden');
+            }
+
             serviceModal.classList.remove('hidden');
         }
 
@@ -1931,6 +2809,7 @@
             }
         });
 
+        // Sistema de chat
         document.getElementById('sendMessageBtn').addEventListener('click', () => {
             const input = document.getElementById('messageInput');
             const message = input.value.trim();
@@ -1960,6 +2839,7 @@
             }
         });
 
+        // Sistema de solicitações para profissionais
         function renderRequests() {
             const pendingRequests = requests.filter(r => r.status === 'pending');
             
@@ -2018,6 +2898,11 @@
         }
 
         window.acceptRequest = function(id) {
+            if (!currentPlan.active || !currentPlan.canReceiveRequests) {
+                alert('Você precisa do Plano Ativo (R$ 69,90/mês) para aceitar solicitações.');
+                return;
+            }
+            
             const index = requests.findIndex(r => r.id === id);
             if (index > -1) {
                 const acceptedRequest = requests[index];
@@ -2108,29 +2993,15 @@
         function updateStats() {
             document.getElementById('requestsCount').textContent = requests.filter(r => r.status === 'pending').length;
             document.getElementById('acceptedCount').textContent = acceptedServices.length;
+            
+            // Calcular média de avaliações
+            const ratings = services.filter(s => s.jobs > 0).map(s => s.rating);
+            const avgRating = ratings.length > 0 ? 
+                (ratings.reduce((a, b) => a + b, 0) / ratings.length).toFixed(1) : 0.0;
+            document.getElementById('ratingValue').textContent = avgRating;
         }
 
-        document.getElementById('addServiceBtn').addEventListener('click', () => {
-            addServiceModal.classList.remove('hidden');
-        });
-
-        document.getElementById('closeAddModal').addEventListener('click', () => {
-            addServiceModal.classList.add('hidden');
-        });
-
-        addServiceModal.addEventListener('click', (e) => {
-            if (e.target === addServiceModal) {
-                addServiceModal.classList.add('hidden');
-            }
-        });
-
-        document.getElementById('addServiceForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            alert('Serviço publicado com sucesso!');
-            addServiceModal.classList.add('hidden');
-            e.target.reset();
-        });
-
+        // Formatação de CPF
         function formatCPF(value) {
             value = value.replace(/\D/g, '');
             if (value.length <= 11) {
@@ -2153,6 +3024,7 @@
             e.target.value = formatCPF(e.target.value);
         });
 
+        // Inicialização
         checkLoginStatus();
         updateStats();
 
